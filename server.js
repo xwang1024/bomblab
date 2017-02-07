@@ -1,5 +1,7 @@
 'use strict';
 
+require('./polyfill')();
+
 const path       = require('path');
 const express    = require('express');
 const exphbs     = require('express-handlebars');
@@ -17,7 +19,8 @@ const bodyParser   = require('body-parser');
 const route = require('./lib/route')();
 const initPassport = require('./lib/passport');
 const config = require('./lib/config');
-const wechat = require('./lib/service/wechat');
+const Wechat = require('./lib/service/Wechat');
+const Cache  = require('./lib/service/Cache');
 
 const app = express();
 app.config = config;
@@ -28,6 +31,9 @@ app.db = mongoose.createConnection(config.mongodb.uri);
 app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
 app.db.once('open', function () { /* ... */ });
 require('./lib/model')(app, mongoose);
+
+Cache.init(config.redis);
+Wechat.init(config.wechat);
 
 // view engine setup
 var hbs = exphbs.create({

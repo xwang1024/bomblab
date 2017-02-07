@@ -1,0 +1,8 @@
+{
+  "name": "bomblab-wechat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@git.coding.net:xwang1024/bomblab-wechat.git",
+  "author": "XWang1024 <xwang1024@126.com>",
+  "license": "MIT"
+}

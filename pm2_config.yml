@@ -1,0 +1,8 @@
+apps:
+  - script : "bin/www"
+    name   : 'bomblab-wechat'
+    log_date_format : "YYYY-MM-DD HH:mm:ss.SSS"
+    log_file : "./combined.log"
+    merge_logs : true
+    instances : 2
+    exec_mode  : "cluster"

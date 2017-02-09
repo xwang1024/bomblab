@@ -1,6 +1,6 @@
 'use strict';
 
-require('./polyfill')();
+require('./lib/polyfill');
 
 const path       = require('path');
 const express    = require('express');
@@ -11,7 +11,6 @@ const morgan     = require('morgan');
 const passport   = require('passport');
 const mongoose   = require('mongoose');
 const busboy     = require('connect-busboy');
-const cluster    = require('cluster');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
                      require('body-parser-xml')(bodyParser);
@@ -43,7 +42,12 @@ var hbs = exphbs.create({
 });
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
-app.use(morgan('dev'));
+
+morgan.token('username', (req) => (req.user ? req.user.username : 'unknown') );
+app.use(morgan(':remote-addr :username :method :url HTTP/:http-version :status :res[content-length] - :response-time ms', {
+  skip: (req, res) => { return /(.*\.css$)|(.*\.js$)|(.*\.ico$)|(.*\.png$)|(.*\.woff$)|(.*\.woff2$)/.test(req.path); }
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.xml());
@@ -63,9 +67,24 @@ initPassport(app, passport);
 
 app.use('/', route);
 
-// if ((!config.cluster) || (config.cluster && cluster.isMaster)) {
-//   if (config.wechatEnabled)
-//     wechat.init(app);
-// }
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  res.render('error/404', {
+    layout: 'single',
+    message: err.message,
+    error: {}
+  });
+});
+
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(err.status || 500);
+  res.render('error/500', {
+    layout: 'single',
+    message: err.message,
+    stackInfo: err.stack
+  });
+});
 
 module.exports = app;

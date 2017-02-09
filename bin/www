@@ -5,71 +5,30 @@
  * Module dependencies.
  */
 
-var server = require('../server');
-var config = require('../lib/config');
-var debug = require('debug')('BombLab:server');
-var http = require('http');
-const cluster = require('cluster');
+const app    = require('../index');
+const config = require('../lib/config');
+const debug  = require('debug')('Bomblab:www');
+const http   = require('http');
+
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(config.port);
-server.set('port', port);
+let port = normalizePort(config.port);
+app.set('port', port);
 
-server.__server_on = true;
-
-var server;
-if (config.cluster) {
-  if (cluster.isMaster) {
-    console.log(`Server start in CLUSTER mode. WorkerNum: ${config.workerNum}.`);
-    for (var i = 0; i < config.workerNum; i++) {
-      let worker = cluster.fork();
-      console.log(`Worker [${worker.process.pid}] start`);
-    }
-    cluster.on('exit', (worker, code, signal) => {
-      if (worker.exitedAfterDisconnect === true) {
-        console.log('Oh, it was just voluntary – no need to worry');
-      }
-      if (server.__server_on) {
-        console.log(`Worker ${worker.process.pid} died, try to restart.`);
-        if (code !== 0) {
-          console.log(`Worker [${worker.process.pid}] exited with error code: ${code}, try to fork a new worker`);
-          let newWorker = cluster.fork();
-          console.log(`Worker [${newWorker.process.pid}] start`);
-        } else {
-          console.log(`Worker [${worker.process.pid}] restart failed. Code: ${code}`);
-        }
-      } else {
-        console.log(`Worker [${worker.process.pid}] shutdown.`);
-      }
-    });
-    process.on('SIGINT', function () {
-      server.__server_on = false;
-      process.exit(0);
-    });
-  } else {
-    createServer();
-  }
-} else {
-  console.log(`Server start in SINGLE mode.`);
-  createServer();
-}
-
-function createServer() {
-  server = http.createServer(server);
-  server.listen(port);
-  server.on('error', onError);
-  server.on('listening', onListening);
-}
+let server = http.createServer(app);
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  let port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -93,7 +52,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
+  let bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
 
@@ -117,10 +76,9 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
+  let addr = server.address();
+  let bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-  console.log(`Server started on ${addr.address}:${addr.port}`);
+  console.log('Listening on ' + bind);
 }

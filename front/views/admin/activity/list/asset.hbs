@@ -1,0 +1,147 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+<script type="text/javascript" src="/vendor/plupload/js/plupload.full.min.js"></script>
+<script type="text/javascript" src="/vendor/qiniu/dist/qiniu.min.js"></script>
+
+<!--上传图片modal模板-->
+<script type="text/html" id='create-tpl'>
+  <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="imageUploadLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+        <h4 class="modal-title" id="imageUploadLabel">添加图片素材</h4>
+      </div>
+      <form id='create-form'>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>图片文件</label>
+            <div class="input-group">
+              <span type="text" class="form-control" name="uploadFilePath"></span>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" id="image-upload-btn">选择文件</button>
+              </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>图片名称</label>
+            <input type="text" name='name' placeholder="请输入图片名称" class="form-control", required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" name='submitBtn'>添加</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</script>
+<!--修改图片modal模板-->
+<script type="text/html" id='image-modify-tpl'>
+  <div class="modal fade" id="image-modify" tabindex="-1" role="dialog" aria-labelledby="imageModifyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+        <h4 class="modal-title" id="imageModifyLabel">修改图片素材</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>图片名称</label>
+            <input type="text" name='name' placeholder="请输入图片名称" class="form-control" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" name='submitModifyBtn'>修改</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</script>
+{{/block}}
+
+<input type="hidden" name="activityId" value="{{{_PARAMS_.id}}}">
+
+<div class="content-heading">
+  <div class="pull-right">
+    <button type="button" class='btn btn-green btn-sm' name='createBtn' data-js-comp='component/activity/asset/create'>添加图片素材</button>
+  </div>
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li>
+      <a href="/admin/activity">扫码返图</a>
+    </li>
+    <li class="active">
+      <span>图片管理</span>
+    </li>
+  </ol>
+</div>
+
+<input type="hidden" data-js-comp='component/activity/asset/modify'>
+<input type="hidden" data-js-comp='component/activity/asset/delete'>
+<input type="hidden" data-js-comp='component/activity/asset/active'>
+<input type="hidden" data-js-comp='component/activity/asset/autoUpdate'>
+
+<div class="row">
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">图片列表</div>
+      <div class="panel-body">
+        {{#unless _DATA_.result}}
+        <p class='text-center'>没有此类素材</p>
+        {{else}}
+        <div class="row">
+          <div class="col-md-12">
+            {{#each _DATA_.result}}
+              <div class='img-thumbnail media-box pull-left ml mr mt0 mb {{#equals _id ../_DATA_.activity.asset._id}}bg-primary{{/equals}}' data-id='{{_id}}'>
+                <div class='text-center no-wrap' name='name'>{{name}}</div>
+                <a href="{{{url}}}" target="_blank"><img src="{{{url}}}?imageView2/1/w/128/h/128/format/jpg/q/80" alt="" class="img-responsive"  name='img'></a>
+                <div class='media-controller'>
+                  <button class='btn btn-xs btn-primary' name='activeImageBtn'><em class='fa fa-star'></em></button>
+                  <button class='btn btn-xs btn-warning' name='modifyImageBtn'><em class='fa fa-pencil'></em></button>
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">用量统计</div>
+      <div class="panel-body pt0">
+        {{#unless _DATA_.result}}
+        <div class="text-muted text-center">当前没有活动</div>
+        {{else}}
+        <table class='table tabel-striped' id="stat-table">
+          <thead>
+          <tr>
+            <th class="text-left">图片名</th>
+            <th class="text-center">人数</th>
+            <th class="text-right">最后使用</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each _DATA_.stat}}
+            <tr data-id="{{{_id._id}}}">
+              <td class="text-left">{{_id.name}}</td>
+              <td class="text-center">{{total}}</td>
+              <td class="text-right"><small>{{date lastUsedAt "yyyy-MM-dd HH:mm:ss"}}</small></td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+</div>

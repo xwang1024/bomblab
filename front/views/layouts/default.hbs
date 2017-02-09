@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  {{> head }}
+</head>
+<body>
+<div class="loader" style="display: none;">
+  <div class="whirl traditional"></div>
+</div>
+<div class="wrapper">
+  <header class="topnavbar-wrapper">
+    {{> top-navbar }}
+  </header>
+  <aside class="aside">
+    {{> sidebar }}
+  </aside>
+  <section style='margin-bottom: 0 !important;'>
+    <div class="content-wrapper">
+      {{{ body }}}
+    </div>
+  </section>
+</div>
+{{> scripts }}
+</body>
+</html>

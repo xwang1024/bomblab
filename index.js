@@ -10,7 +10,7 @@ const mongoStore = require('connect-mongo')(session);
 const morgan     = require('morgan');
 const passport   = require('passport');
 const mongoose   = require('mongoose');
-const busboy     = require('connect-busboy');
+const qiniu      = require('qiniu');
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
                      require('body-parser-xml')(bodyParser);
@@ -20,6 +20,7 @@ const initPassport = require('./lib/passport');
 const config = require('./lib/config');
 const Wechat = require('./lib/service/Wechat');
 const Cache  = require('./lib/service/Cache');
+const Xiumi = require('./lib/service/Xiumi');
 
 const app = express();
 app.config = config;
@@ -33,11 +34,14 @@ require('./lib/model')(app, mongoose);
 
 Cache.init(config.redis);
 Wechat.init(config.wechat);
+Xiumi.init(config.xiumi);
+qiniu.conf.ACCESS_KEY = config.qiniu.ACCESS_KEY;
+qiniu.conf.SECRET_KEY = config.qiniu.SECRET_KEY;
 
 // view engine setup
 var hbs = exphbs.create({
   extname: ".hbs",
-  defaultLayout: 'main',
+  defaultLayout: 'default',
   helpers: require('./lib/hbs_helpers')
 });
 app.engine('hbs', hbs.engine);
@@ -61,7 +65,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(busboy());
 
 initPassport(app, passport);
 
@@ -69,7 +72,7 @@ app.use('/', route);
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
-  err.status = 404;
+  res.status(404);
   res.render('error/404', {
     layout: 'single',
     message: err.message,

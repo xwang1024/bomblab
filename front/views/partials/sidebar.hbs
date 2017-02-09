@@ -1,0 +1,45 @@
+<div class="aside-inner">
+  <nav data-sidebar-anyclick-close="" class="sidebar" data-js-comp="component/common/sidebar">
+    <ul class="nav">
+      <li class="nav-heading">
+        <span>概览</span>
+      </li>
+      {{#startsWith _PATH_ "/admin/dashboard" }}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/dashboard" title="控制台">
+          <em class="fa fa-tachometer"></em>
+          <span>控制台</span>
+        </a>
+      </li>
+
+      <li class="nav-heading">
+        <span>管理</span>
+      </li>
+
+      {{#startsWith _PATH_ "/admin/activity"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/activity" title="扫码返图">
+          <em class="fa fa-star"></em>
+          <span>扫码返图</span>
+        </a>
+      </li>
+
+      {{#startsWith _PATH_ "/root/user"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/root/user" title="运营账号管理">
+          <em class="fa fa-lock"></em>
+          <span>运营账号管理</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

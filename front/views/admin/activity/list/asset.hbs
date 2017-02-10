@@ -83,6 +83,7 @@
   </ol>
 </div>
 
+<input type="hidden" data-js-comp='component/activity/asset/preview'>
 <input type="hidden" data-js-comp='component/activity/asset/modify'>
 <input type="hidden" data-js-comp='component/activity/asset/delete'>
 <input type="hidden" data-js-comp='component/activity/asset/active'>
@@ -120,7 +121,7 @@
                   <a href="javascript:;" name='activeImageBtn'>激活</a>
                 {{/equals}}
                 <a href="javascript:;" name='modifyImageBtn'>修改</a>
-                <a href="javascript:;" name='previewImageBtn'>预览</a>
+                <a href="javascript:;" name='previewImageBtn' data-url="{{{url}}}">预览</a>
               </td>
             </tr>
             {{/each}}

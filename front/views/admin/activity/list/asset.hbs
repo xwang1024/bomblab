@@ -78,7 +78,7 @@
       <a href="/admin/activity">扫码返图</a>
     </li>
     <li class="active">
-      <span>图片管理</span>
+      <span>{{_DATA_.activity.name}} - 图片管理</span>
     </li>
   </ol>
 </div>
@@ -94,7 +94,7 @@
     <div class="panel panel-default">
       <div class="panel-body p0">
         {{#unless _DATA_.result}}
-        <div class="text-muted text-center">当前没有图片</div>
+        <div class="text-muted text-center pv">当前没有图片</div>
         {{else}}
         <table class='table tabel-striped'>
           <thead>
@@ -110,7 +110,7 @@
               <td name="name">{{name}}</td>
               <td class="text-center">
                 {{#equals _id ../_DATA_.activity.asset._id}}
-                  <span class="text-primary">正在使用</span>
+                  <span class="label label-green">正在使用</span>
                 {{else}}
                   <span class="text-muted">未激活</span>
                 {{/equals}}
@@ -136,7 +136,7 @@
     <div class="panel panel-default">
       <div class="panel-body p0">
         {{#unless _DATA_.result}}
-        <div class="text-muted text-center">当前没有活动</div>
+        <div class="text-muted text-center pv">当前没有活动</div>
         {{else}}
         <table class='table tabel-striped' id="stat-table">
           <thead>

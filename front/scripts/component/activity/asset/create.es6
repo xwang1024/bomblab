@@ -58,7 +58,7 @@
           }
         },
         BeforeUpload: function(up, file) {
-          Loader.show('#create');
+          Loader.show();
         },
         FileUploaded: function(up, file, info) {
           var info = JSON.parse(info);
@@ -72,7 +72,7 @@
             dataType: 'json',
             contentType: 'application/json',
             success: function (data) {
-              Loader.hide('#create');
+              Loader.hide();
               if(data.error) {
                 if(typeof data.error.message === 'object') {
                   data.error.message = data.error.message.join('\n');
@@ -92,7 +92,7 @@
           });
         },
         Error: function(up, err, errTip) {
-          Loader.hide('#create');
+          Loader.hide();
           alert(errTip);
         }
       }

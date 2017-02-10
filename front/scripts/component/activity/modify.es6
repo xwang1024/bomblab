@@ -13,7 +13,6 @@
     $('#modify').modal({backdrop: 'static', keyboard: false});
 
     $('#modify [name="name"]').val(name);
-    $('#modify [name="hint"]').val(hint);
 
     $('#modify #activity-form').on('submit', function (e) {
       if (e.isDefaultPrevented()) {
@@ -21,7 +20,6 @@
         e.preventDefault();
         var sceneStrs = [];
         var name = $('#modify [name=name]').val();
-        var hint = $('#modify [name=hint]').val();
         Loader.show();
         $.ajax({
           url : '/api/admin/activity/' + _id,

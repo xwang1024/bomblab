@@ -13,12 +13,11 @@
         e.preventDefault();
         var sceneStrs = [];
         var name = $('#create [name=name]').val();
-        var hint = $('#create [name=hint]').val();
         Loader.show();
         $.ajax({
           url : '/api/admin/activity',
           type : 'POST',
-          data : JSON.stringify({name: name, hint: hint}),
+          data : JSON.stringify({name: name}),
           dataType: 'json',
           contentType: 'application/json',
           success : function(data) {

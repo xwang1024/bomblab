@@ -89,45 +89,60 @@
 <input type="hidden" data-js-comp='component/activity/asset/autoUpdate'>
 
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-8">
     <div class="panel panel-default">
-      <div class="panel-heading">图片列表</div>
-      <div class="panel-body">
+      <div class="panel-body p0">
         {{#unless _DATA_.result}}
-        <p class='text-center'>没有此类素材</p>
+        <div class="text-muted text-center">当前没有图片</div>
         {{else}}
-        <div class="row">
-          <div class="col-md-12">
+        <table class='table tabel-striped'>
+          <thead>
+          <tr>
+            <th class="text-left">图片名称</th>
+            <th class="text-center">当前状态</th>
+            <th class="text-right">操作</th>
+          </tr>
+          </thead>
+          <tbody>
             {{#each _DATA_.result}}
-              <div class='img-thumbnail media-box pull-left ml mr mt0 mb {{#equals _id ../_DATA_.activity.asset._id}}bg-primary{{/equals}}' data-id='{{_id}}'>
-                <div class='text-center no-wrap' name='name'>{{name}}</div>
-                <a href="{{{url}}}" target="_blank"><img src="{{{url}}}?imageView2/1/w/128/h/128/format/jpg/q/80" alt="" class="img-responsive"  name='img'></a>
-                <div class='media-controller'>
-                  <button class='btn btn-xs btn-primary' name='activeImageBtn'><em class='fa fa-star'></em></button>
-                  <button class='btn btn-xs btn-warning' name='modifyImageBtn'><em class='fa fa-pencil'></em></button>
-                </div>
-              </div>
+            <tr data-id="{{{_id}}}" data-name="{{name}}" data-hint="{{hint}}">
+              <td name="name">{{name}}</td>
+              <td class="text-center">
+                {{#equals _id ../_DATA_.activity.asset._id}}
+                  <span class="text-primary">正在使用</span>
+                {{else}}
+                  <span class="text-muted">未激活</span>
+                {{/equals}}
+              </td>
+              <td class="text-right">
+                {{#equals _id ../_DATA_.activity.asset._id}}
+                {{else}}
+                  <a href="javascript:;" name='activeImageBtn'>激活</a>
+                {{/equals}}
+                <a href="javascript:;" name='modifyImageBtn'>修改</a>
+                <a href="javascript:;" name='previewImageBtn'>预览</a>
+              </td>
+            </tr>
             {{/each}}
-          </div>
-        </div>
+          </tbody>
+        </table>
         {{/unless}}
       </div>
     </div>
   </div>
   
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="panel panel-default">
-      <div class="panel-heading">用量统计</div>
-      <div class="panel-body pt0">
+      <div class="panel-body p0">
         {{#unless _DATA_.result}}
         <div class="text-muted text-center">当前没有活动</div>
         {{else}}
         <table class='table tabel-striped' id="stat-table">
           <thead>
           <tr>
-            <th class="text-left">图片名</th>
-            <th class="text-center">人数</th>
-            <th class="text-right">最后使用</th>
+            <th class="text-left">图片名称</th>
+            <th class="text-center">使用人数</th>
+            <th class="text-right">最后使用时间</th>
           </tr>
           </thead>
           <tbody>

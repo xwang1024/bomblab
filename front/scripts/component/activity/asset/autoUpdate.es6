@@ -1,8 +1,8 @@
 'use strict';
 
 (function(window, document, $, module, exports, require, swal, Qiniu, QiniuConfig){
-  var Loader = require('component/common/loader');
-  var activityId = $('[name=activityId]').val();
+  let Loader = require('component/common/loader');
+  let activityId = $('[name=activityId]').val();
   setInterval(function() {
     console.log('update stat');
     $.ajax({
@@ -14,7 +14,7 @@
         if(data.stat) {
           $('#stat-table tbody').empty();
           data.stat.forEach(function(row) {
-            var lastUsedAt = '-';
+            let lastUsedAt = '-';
             if(row.lastUsedAt) {
               lastUsedAt = new Date(row.lastUsedAt).format('yyyy-MM-dd hh:mm:ss');
             }

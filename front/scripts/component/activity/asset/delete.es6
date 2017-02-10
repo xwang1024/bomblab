@@ -1,10 +1,10 @@
 'use strict';
 
 (function(window, document, $, module, exports, require, swal, Qiniu, QiniuConfig){
-  var Loader = require('component/common/loader');
-  var activityId = $('[name=activityId]').val();
+  let Loader = require('component/common/loader');
+  let activityId = $('[name=activityId]').val();
   $('[name=deleteImageBtn]').click(function(e) {
-    var id = $(this).parents('.media-box').data('id');
+    let id = $(this).parents('tr').data('id');
     swal({
       title : '确定删除？',
       text : '已获取该图片的用户仍可通过回复获得该图片',

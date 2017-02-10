@@ -1,10 +1,10 @@
 'use strict';
 
 (function(window, document, $, module, exports, require, swal, Qiniu, QiniuConfig){
-  var Loader = require('component/common/loader');
-  var activityId = $('[name=activityId]').val();
+  let Loader = require('component/common/loader');
+  let activityId = $('[name=activityId]').val();
   $('[name=activeImageBtn]').click(function(e) {
-    var id = $(this).parents('.media-box').data('id');
+    let id = $(this).parents('tr').data('id');
     swal({
       title : '确定激活该图片？',
       text : '用户回复活动暗号将永久获得该图片',

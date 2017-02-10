@@ -1,17 +1,17 @@
 'use strict';
 
 (function(window, document, $, module, exports, require, swal, Qiniu, QiniuConfig){
-  var Loader = require('component/common/loader');
-  var activityId = $('[name=activityId]').val();
+  let Loader = require('component/common/loader');
+  let activityId = $('[name=activityId]').val();
   $('[name=modifyImageBtn]').click(function(e) {
     $('body').append($('#image-modify-tpl').html());
-    var id = $(this).parents('.media-box').data('id');
-    var name = $(this).parents('.media-box').find('[name=name]').text();
+    let id = $(this).parents('tr').data('id');
+    let name = $(this).parents('tr').find('[name=name]').text();
     $('#image-modify [name=name]').val(name);
 
     // 绑定修改操作
     $('#image-modify [name=submitModifyBtn]').unbind().click(function() {
-      var body = {
+      let body = {
         name: $('#image-modify [name=name]').val()
       }
       console.log(body)

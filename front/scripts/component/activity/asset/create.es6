@@ -1,10 +1,10 @@
 'use strict';
 
 (function(window, document, $, module, exports, require, swal, Qiniu, QiniuConfig){
-  var Loader = require('component/common/loader');
-  var activityId = $('[name=activityId]').val();
-  var uploader;
-  var formData = {};
+  let Loader = require('component/common/loader');
+  let activityId = $('[name=activityId]').val();
+  let uploader;
+  let formData = {};
   $('[name=createBtn]').click(function(e) {
     $('body').append($('#create-tpl').html());
     bindSubmit();
@@ -53,7 +53,7 @@
           if(files.length === 0 ) {
             $('[name=uploadFilePath]').empty();
           } else {
-            var fileName = files[0].name;
+            let fileName = files[0].name;
             $('[name=uploadFilePath]').text(fileName);
           }
         },
@@ -61,7 +61,7 @@
           Loader.show();
         },
         FileUploaded: function(up, file, info) {
-          var info = JSON.parse(info);
+          info = JSON.parse(info);
           formData['key']  = info.key;
           formData['ext']  = /^.*\.([^\.]*)$/.exec(file.name)[1];
 

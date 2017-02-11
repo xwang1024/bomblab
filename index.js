@@ -11,6 +11,7 @@ const morgan     = require('morgan');
 const passport   = require('passport');
 const mongoose   = require('mongoose');
 const qiniu      = require('qiniu');
+const busboy     = require('connect-busboy'); // 文件上传支持
 const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
                      require('body-parser-xml')(bodyParser);
@@ -65,6 +66,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(busboy());
 
 initPassport(app, passport);
 

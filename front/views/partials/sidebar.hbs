@@ -30,6 +30,17 @@
         </a>
       </li>
 
+      {{#startsWith _PATH_ "/admin/material/image"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/material/image" title="图片素材管理">
+          <em class="fa fa-image"></em>
+          <span>图片素材管理</span>
+        </a>
+      </li>
+
       {{#startsWith _PATH_ "/root/user"}}
       <li class="active">
       {{else}}

@@ -41,3 +41,42 @@
     </li>
   </ol>
 </div>
+
+<input type="hidden" data-js-comp='component/common/img_preview'>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-body p0">
+        {{#unless _DATA_.result}}
+        <div class="text-muted text-center pv">当前没有图片</div>
+        {{else}}
+        <table class='table tabel-striped'>
+          <thead>
+          <tr>
+            <th class="text-left">图片名称</th>
+            <th class="text-center">上传时间</th>
+            <th class="text-right">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each _DATA_.result}}
+            <tr data-id="{{{_id}}}" data-name="{{name}}" data-hint="{{hint}}">
+              <td name="name">{{name}}</td>
+              <td class="text-center">
+                <small class="text-muted">{{date update_time 'yyyy-MM-dd HH:mm:ss'}}</small>
+              </td>
+              <td class="text-right">
+                <a href="javascript:;" name='previewImageBtn' data-url="/admin/material/image/preview?mediaId={{{media_id}}}">预览</a>
+                <a href="javascript:;" name='deleteImageBtn'>删除</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{> pagination}}
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+</div>

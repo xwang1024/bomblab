@@ -19,6 +19,17 @@
         <span>管理</span>
       </li>
 
+      {{#startsWith _PATH_ "/admin/menu"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/menu" title="自定义菜单管理">
+          <em class="fa fa-image"></em>
+          <span>自定义菜单管理</span>
+        </a>
+      </li>
+
       {{#startsWith _PATH_ "/admin/activity"}}
       <li class="active">
       {{else}}

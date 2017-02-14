@@ -146,7 +146,13 @@
     updateMenu(index, data) {
       let currentMenu = this.data.menu.button[index];
       if(!currentMenu) return swal('error', '找不到当前菜单');
-      this.data.menu.button[index] = data;
+      if(currentMenu.length) {
+        this.data.menu.button[index].name = data.name;
+      } else {
+        this.data.menu.button[index] = data;
+        this.data.menu.button[index].sub_button = [];
+      }
+      console.log(index, this.data);
       this._render();
       this._selectMenu(index);
     }
@@ -171,9 +177,9 @@
     deleteSubMenu(index, subIndex) {
       let currentMenu = this.data.menu.button[index];
       if(!currentMenu) return swal('error', '找不到当前菜单');
-      let currentSubMenu = currentMenu.sub_button[subIndex];
+      let currentSubMenu = currentMenu.sub_button;
       if(!currentSubMenu) return swal('error', '找不到当前子菜单');
-      currentMenu.splice(subIndex, 1);
+      currentSubMenu.splice(subIndex, 1);
       this._render();
       this._selectMenu(index);
     }
@@ -183,6 +189,7 @@
       if(!currentMenu) return swal('error', '找不到当前菜单');
       let toIndex = index + offset;
       (toIndex < 0) && (toIndex = 0);
+      (toIndex > this.data.menu.button.length-1) && (toIndex = this.data.menu.button.length-1);
       (toIndex > 2) && (toIndex = 2);
       this._arrayMove(this.data.menu.button, index, toIndex);
       this._render();
@@ -196,7 +203,9 @@
       if(!currentSubMenu) return swal('error', '找不到当前子菜单');
       let toIndex = subIndex + offset;
       (toIndex < 0) && (toIndex = 0);
+      (toIndex > currentMenu.sub_button.length-1) && (toIndex = currentMenu.sub_button.length-1);
       (toIndex > 4) && (toIndex = 4);
+      console.log(toIndex)
       this._arrayMove(currentMenu.sub_button, subIndex, toIndex);
       this._render();
       this._selectSubMenu(index, toIndex);
@@ -210,13 +219,11 @@
 
     _selectMenu(index) {
       $(this.$element.find('.jslevel1')[index]).trigger('click');
-      return this.data.menu.button[index];
     }
 
     _selectSubMenu(index, subIndex) {
-      let currentMenu = this._selectMenu(index);
-      console.log
-      $($(this.$element.find('.jslevel1')[index]).find('.jslevel2')[currentMenu.sub_button.length-1]).trigger('click');
+      this._selectMenu(index);
+      $($(this.$element.find('.jslevel1')[index]).find('.jslevel2')[subIndex]).trigger('click');
     }
 
     setSelectMenuHandler(fn) {

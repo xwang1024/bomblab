@@ -38,6 +38,8 @@
     "bower_components/animate.css/animate.min.css",
     "bower_components/select2/dist/css/select2.css",
     "bower_components/select2/dist/js/select2.js",
+    "bower_components/jquery-selectric/public/jquery.selectric.min.js",
+    "bower_components/jquery-selectric/public/selectric.css",
     "bower_components/select2/dist/js/i18n/zh-CN.js",
     "bower_components/handlebars/handlebars.min.js",
     "bower_components/sweetalert/dist/sweetalert.css",

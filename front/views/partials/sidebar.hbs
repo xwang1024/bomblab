@@ -19,17 +19,6 @@
         <span>管理</span>
       </li>
 
-      {{#startsWith _PATH_ "/admin/menu"}}
-      <li class="active">
-      {{else}}
-      <li>
-      {{/startsWith}}
-        <a href="/admin/menu" title="自定义菜单管理">
-          <em class="fa fa-image"></em>
-          <span>自定义菜单管理</span>
-        </a>
-      </li>
-
       {{#startsWith _PATH_ "/admin/activity"}}
       <li class="active">
       {{else}}
@@ -40,6 +29,40 @@
           <span>扫码返图</span>
         </a>
       </li>
+
+      {{#startsWith _PATH_ "/admin/menu"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/menu" title="自定义菜单管理">
+          <em class="fa fa-list"></em>
+          <span>自定义菜单管理</span>
+        </a>
+      </li>
+
+      {{#startsWith _PATH_ "/admin/replyQueue"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/replyQueue" title="消息队列管理">
+          <em class="fa fa-commenting"></em>
+          <span>消息队列管理</span>
+        </a>
+      </li>
+
+      {{#startsWith _PATH_ "/admin/subcribeReply"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/subcribeReply" title="关注回复管理">
+          <em class="fa fa-feed"></em>
+          <span>关注回复管理</span>
+        </a>
+      </li>
+      
 
       {{#startsWith _PATH_ "/admin/material/image"}}
       <li class="active">

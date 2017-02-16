@@ -1,0 +1,34 @@
+<script type="text/html" id='create-tpl'>
+  <div class="modal fade" id="create" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="loader" style="display: none;">
+        <div class="whirl traditional"></div>
+      </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+          <h4 class="modal-title" id="createLabel">上传图片素材</h4>
+        </div>
+        <form id='image-form'>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>图片文件</label>
+              <div class="input-group">
+                <span type="text" class="form-control" name="uploadFilePath"></span>
+                <input type="file" class="hidden" name="file" accept="image/x-png,image/gif,image/jpeg">
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" id="image-upload-btn">选择文件</button>
+                </span>
+              </div>
+            </div>
+          </div>
+            
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" name='submitBtn'>上传</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</script>

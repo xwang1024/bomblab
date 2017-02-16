@@ -3,34 +3,12 @@
 
 {{#block "vendor_js"}}
 <!--加modal模板-->
-<script type="text/html" id='create-tpl'>
-  <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
-        <h4 class="modal-title" id="createLabel">添加活动</h4>
-      </div>
-      <form id='activity-form'>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>名称</label>
-            <input type="text" name='name' placeholder="请输入名称" class="form-control" required autocomplete="off">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-green" name='submitBtn'>生成活动</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</script>
+{{>modal/createImageModal}}
 {{/block}}
 
 <div class="content-heading">
   <div class="pull-right">
-    <button type="button" class='btn btn-green btn-sm' name='addActivityBtn' data-js-comp='component/activity/create'>上传图片素材</button>
+    <button type="button" class='btn btn-green btn-sm' name='addImageBtn' data-js-comp='component/material/createImage'>上传图片素材</button>
   </div>
   <ol class="breadcrumb">
     <li>
@@ -43,6 +21,7 @@
 </div>
 
 <input type="hidden" data-js-comp='component/common/img_preview'>
+<input type="hidden" data-js-comp='component/material/deleteImage'>
 
 <div class="row">
   <div class="col-md-12">
@@ -55,14 +34,16 @@
           <thead>
           <tr>
             <th class="text-left">图片名称</th>
+            <th class="text-left">Media Id</th>
             <th class="text-center">上传时间</th>
             <th class="text-right">操作</th>
           </tr>
           </thead>
           <tbody>
             {{#each _DATA_.result}}
-            <tr data-id="{{{_id}}}" data-name="{{name}}" data-hint="{{hint}}">
+            <tr data-id="{{{media_id}}}" data-name="{{name}}" data-hint="{{hint}}">
               <td name="name">{{name}}</td>
+              <td name="mediaId"><small>{{media_id}}</small></td>
               <td class="text-center">
                 <small class="text-muted">{{date update_time 'yyyy-MM-dd HH:mm:ss'}}</small>
               </td>

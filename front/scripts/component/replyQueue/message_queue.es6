@@ -1,6 +1,8 @@
 'use strict';
 
 (function(window, document, $, module, exports, require, swal, Qiniu, QiniuConfig){
+  let Loader = require('component/common/loader');
+
   class ReplyQueue {
     constructor(ctnSelector) {
       this.$element = $(ctnSelector);
@@ -23,7 +25,8 @@
           `<div class="panel panel-default">
             <div class="panel-heading">
               消息组
-              <button class="btn btn-xs btn-primary pull-right" name="addImageBtn">增加图片</button>
+              <button class="btn btn-xs btn-danger pull-right" name="deleteGroupBtn">删除</button>
+              <button class="btn btn-xs btn-primary pull-right mr-sm" name="addImageBtn">增加图片</button>
               <button class="btn btn-xs btn-primary pull-right mr-sm" name="addTextBtn">增加文本</button>
               <button class="btn btn-xs btn-default pull-right mr-sm" name="backwardGroupBtn">下移</button>
               <button class="btn btn-xs btn-default pull-right mr-sm" name="forwardGroupBtn">上移</button>
@@ -75,9 +78,11 @@
         let messageGroupIndex = vm.$element.find('.panel').index($(this).parents('.panel'));
         vm.moveGroup(messageGroupIndex, -1);
       });
+      this.$element.find('[name=deleteGroupBtn]').unbind().on('click', function(e) {
+        let messageGroupIndex = vm.$element.find('.panel').index($(this).parents('.panel'));
+        vm.deleteGroup(messageGroupIndex);
+      });
       this.$element.find('[name=backwardGroupBtn]').unbind().on('click', function(e) {
-        console.log(vm.$element.find('.panel'))
-        console.log($(this).parents('.panel'))
         let messageGroupIndex = vm.$element.find('.panel').index($(this).parents('.panel'));
         vm.moveGroup(messageGroupIndex, 1);
       });
@@ -141,8 +146,38 @@
         let messageIndex = $(this).parents('.message-bubble-list').find('li').index($(this).parents('li'));
         vm.moveMessage(messageGroupIndex, messageIndex, 1);
       });
+      this.$element.find('[name=deleteMessageBtn]').unbind().on('click', function(e) {
+        let messageGroupIndex = vm.$element.find('.panel').index($(this).parents('.panel'));
+        let messageIndex = $(this).parents('.message-bubble-list').find('li').index($(this).parents('li'));
+        vm.deleteMessage(messageGroupIndex, messageIndex);
+      });
       this.$element.find('[name=saveGroupBtn]').unbind().on('click', function(e) {
         console.log(vm.data);
+        Loader.show();
+        $.ajax({
+          url : '/api/admin/replyQueue/' + vm.data._id,
+          type : 'PUT',
+          data : JSON.stringify(vm.data),
+          dataType: 'json',
+          contentType: 'application/json',
+          success : function(data) {
+            Loader.hide();
+            console.log(data);
+            if (data.error) {
+              if (typeof data.error.message === 'object') {
+                data.error.message = data.error.message.join('\n');
+              }
+              return swal('错误', data.error.message, 'error');
+            }
+            swal({
+                title : "消息组保存成功",
+                type : "success"
+              },
+              function () {
+                
+              });
+          }
+        });
       });
     }
     
@@ -181,13 +216,22 @@
     }
 
     moveMessage(index, subIndex, offset) {
-      console.log(this.data.messageGroups[index], index, subIndex, offset)
       let messageGroup = this.data.messageGroups[index];
       let toIndex = subIndex + offset;
       (toIndex < 0) && (toIndex = 0);
       (toIndex > messageGroup.length-1) && (toIndex = messageGroup.length-1);
       console.log(this.data.messageGroups[index], index, subIndex, toIndex)
       this._arrayMove(this.data.messageGroups[index], subIndex, toIndex);
+      this._render();
+    }
+
+    deleteGroup(index) {
+      this.data.messageGroups.splice(index, 1);
+      this._render();
+    }
+
+    deleteMessage(index, subIndex) {
+      this.data.messageGroups[index].splice(subIndex, 1);
       this._render();
     }
 

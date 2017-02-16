@@ -9,9 +9,9 @@
       <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
-        <h4 class="modal-title" id="createLabel">添加活动</h4>
+        <h4 class="modal-title" id="createLabel">添加回复队列</h4>
       </div>
-      <form id='activity-form'>
+      <form id='queue-form'>
         <div class="modal-body">
           <div class="form-group">
             <label>名称</label>
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-green" name='submitBtn'>生成活动</button>
+          <button type="submit" class="btn btn-green" name='submitBtn'>提交</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
         </div>
       </form>
@@ -30,6 +30,7 @@
 
 <div class="content-heading">
   <div class="pull-right">
+    <button type="button" class='btn btn-green btn-sm' name='addQueueBtn' data-js-comp="component/replyQueue/create">增加回复队列</button>
   </div>
   <ol class="breadcrumb">
     <li>
@@ -39,4 +40,47 @@
       <span>回复队列管理</span>
     </li>
   </ol>
+</div>
+
+<input type="hidden" data-js-comp="component/replyQueue/detail">
+
+<div class="row">
+  <div id="list-area" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel panel-body p0 m0">
+        {{#unless _DATA_.result}}
+        <div class="text-muted text-center pv">当前没有回复队列</div>
+        {{else}}
+        <table class='table tabel-striped'>
+          <thead>
+          <tr>
+            <th class="text-left">队列名称</th>
+            <th class="text-left">KEY</th>
+            <th class="text-center">创建时间</th>
+            <th class="text-right">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each _DATA_.result}}
+            <tr data-id="{{{_id}}}" data-name="{{name}}" data-hint="{{hint}}">
+              <td>{{name}}</td>
+              <td class="text-left">{{_id}}</td>
+              <td class="text-center">
+                <span class="text-sm text-muted">{{date createdAt "yyyy-MM-dd HH:mm:ss"}}</span>
+              </td>
+              <td class="text-right">
+                <a href="javascript:;" name='queueDetailBtn'>队列详情</a>
+                <a href="javascript:;" name='deleteQueueBtn'>删除</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+  <div id="detail-area" class="col-md-5 hidden">
+    
+  </div>
 </div>

@@ -1,0 +1,62 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+<!--加modal模板-->
+<script type="text/html" id='create-tpl'>
+  <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+        <h4 class="modal-title" id="createLabel">增加消息组</h4>
+      </div>
+      <form id='activity-form'>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>回复时间（单位：分钟）</label>
+            <input type="text" name='waitSeconds' placeholder="关注多少分钟后回复该消息组？" class="form-control" required autocomplete="off">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-green" name='submitBtn'>增加消息组</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</script>
+{{/block}}
+
+<div class="content-heading">
+  <div class="pull-right">
+    <button class="btn btn-green" name="addGroupBtn">增加消息组</button>
+  </div>
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li class="active">
+      <span>关注回复管理</span>
+    </li>
+  </ol>
+</div>
+
+<div class="row">
+  <div id="detail-area" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        等待...分钟后回复
+        <button class="btn btn-xs btn-danger pull-right" name="deleteMessageGroupBtn">删除</button>
+        <button class="btn btn-xs btn-warning pull-right mr-sm" name="modifyMessageGroupBtn">编辑</button>
+      </div>
+      <div class="panel-body pv0">
+        <ul class="message-bubble-list">
+          <li>
+            <span>Hello</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -30,6 +30,17 @@
         </a>
       </li>
 
+      {{#startsWith _PATH_ "/admin/subscriber"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/subscriber" title="订阅者管理">
+          <em class="fa fa-user"></em>
+          <span>订阅者管理</span>
+        </a>
+      </li>
+
       {{#startsWith _PATH_ "/admin/menu"}}
       <li class="active">
       {{else}}

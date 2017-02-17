@@ -1,0 +1,57 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+{{/block}}
+
+<div class="content-heading">
+  <div class="pull-right">
+    <button type="button" class='btn btn-primary btn-sm' name='syncBtn' data-js-comp="component/subscriber/sync">同步订阅者</button>
+  </div>
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li class="active">
+      <span>订阅者管理</span>
+    </li>
+  </ol>
+</div>
+
+<div class="row">
+  <div id="list-area" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel panel-body p0 m0">
+        {{#unless _DATA_.result}}
+        <div class="text-muted text-center pv">当前没有订阅者，请同步</div>
+        {{else}}
+        <table class='table tabel-striped'>
+          <thead>
+          <tr>
+            <th class="text-left">队列名称</th>
+            <th class="text-left">KEY</th>
+            <th class="text-center">创建时间</th>
+            <th class="text-right">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each _DATA_.result}}
+            <tr data-id="{{{_id}}}" data-name="{{name}}" data-hint="{{hint}}">
+              <td>{{name}}</td>
+              <td class="text-left">{{_id}}</td>
+              <td class="text-center">
+                <span class="text-sm text-muted">{{date createdAt "yyyy-MM-dd HH:mm:ss"}}</span>
+              </td>
+              <td class="text-right">
+                <a href="javascript:;" name='queueDetailBtn'>队列详情</a>
+                <a href="javascript:;" name='deleteQueueBtn'>删除</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+</div>

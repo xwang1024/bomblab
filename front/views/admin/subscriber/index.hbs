@@ -28,23 +28,31 @@
         <table class='table tabel-striped'>
           <thead>
           <tr>
-            <th class="text-left">队列名称</th>
-            <th class="text-left">KEY</th>
-            <th class="text-center">创建时间</th>
-            <th class="text-right">操作</th>
+            <th class="text-left" colspan='2'>基本信息</th>
+            <th class="text-center">性别</th>
+            <th class="text-center">地址</th>
+            <th class="text-right">关注时间</th>
           </tr>
           </thead>
           <tbody>
             {{#each _DATA_.result}}
-            <tr data-id="{{{_id}}}" data-name="{{name}}" data-hint="{{hint}}">
-              <td>{{name}}</td>
-              <td class="text-left">{{_id}}</td>
+            <tr data-id="{{{_id}}}">
+              <td style='width: 64px;'>
+                <img src="{{{headImgUrl}}}" style='max-width: 48px; max-height: 64px;'/>
+              </td>
+              <td class="text-left">
+                {{nickname}} <br/>
+                <small class="text-muted">备注：{{#if remark}}{{remark}}{{else}}无{{/if}}</small>
+              </td>
               <td class="text-center">
-                <span class="text-sm text-muted">{{date createdAt "yyyy-MM-dd HH:mm:ss"}}</span>
+                <span class='text-muted'>{{weSex gender}}</span>
+              </td>
+              <td class="text-center">
+                {{country}} {{province}} {{city}}
+                {{#unless country}}{{#unless province}}{{#unless city}}-{{/unless}}{{/unless}}{{/unless}}
               </td>
               <td class="text-right">
-                <a href="javascript:;" name='queueDetailBtn'>队列详情</a>
-                <a href="javascript:;" name='deleteQueueBtn'>删除</a>
+                <small class="text-muted">{{date subscribeTime "yyyy-MM-dd HH:mm:ss"}}</small>
               </td>
             </tr>
             {{/each}}

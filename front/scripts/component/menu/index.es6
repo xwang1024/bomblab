@@ -6,52 +6,58 @@
   let Loader = require('component/common/loader');
   let WechatMenu = require('component/menu/wechat_menu');
 
-  let menu = {
-    "menu": {
-      "button": [
-        // {
-        //   "type": "click",
-        //   "name": "今日歌曲",
-        //   "key": "V1001_TODAY_MUSIC",
-        //   "sub_button": []
-        // },
-        {
-          "type": "click",
-          "name": "歌手简介",
-          "key": "V1001_TODAY_SINGER",
-          "sub_button": []
-        },
-        {
-          "name": "菜单",
-          "sub_button": [
-            {
-              "type": "view",
-              "name": "搜索",
-              "url": "http://www.soso.com/",
-              "sub_button": []
-            },
-            {
-              "type": "view",
-              "name": "视频",
-              "url": "http://v.qq.com/",
-              "sub_button": []
-            },
-            {
-              "type": "click",
-              "name": "赞一下我们",
-              "key": "V1001_GOOD",
-              "sub_button": []
-            }
-          ]
-        }
-      ]
-    }
-  }
-
   let wechatMenu = new WechatMenu('#menuList');
   wechatMenu.setSelectMenuHandler(onMenuSelected);
   wechatMenu.setSelectSubMenuHandler(onSubMenuSelected);
-  wechatMenu.init();
+
+  Loader.show();
+  $.ajax({
+    url : '/api/admin/menu',
+    type : 'GET',
+    dataType: 'json',
+    contentType: 'application/json',
+    success : (data) => {
+      Loader.hide();
+      console.log(data);
+      if (data.error) {
+        if (typeof data.error.message === 'object') {
+          data.error.message = data.error.message.join('\n');
+        }
+        return swal('错误', data.error.message, 'error');
+      }
+      wechatMenu.init(data);
+    }
+  });
+
+  $('[name=updateMenuBtn]').unbind().on('click', function() {
+    let menuData = wechatMenu.getData();
+    console.log(menuData);
+    Loader.show();
+    $.ajax({
+      url : '/api/admin/menu',
+      type : 'PUT',
+      data : JSON.stringify({menuConfig: menuData}),
+      dataType: 'json',
+      contentType: 'application/json',
+      success : function(data) {
+        Loader.hide();
+        console.log(data);
+        if (data.error) {
+          if (typeof data.error.message === 'object') {
+            data.error.message = data.error.message.join('\n');
+          }
+          return swal('错误', data.error.message, 'error');
+        }
+        swal({
+            title : "自定义菜单修改成功",
+            type : "success"
+          },
+          function () {
+            location.reload();
+          });
+      }
+    });
+  });
 
   function onMenuSelected(menuData, index) {
     renderMenuPanel(menuData, index, undefined);
@@ -87,7 +93,7 @@
                 </div>
                 <div class="col-md-6">
                   <label>key</label>
-                  <input type="text" class="form-control" name="key">
+                  <input type="text" class="form-control" name="key" value="${menuData.key ? (menuData.key.split('-')[1] || ''): ''}">
                 </div>
               </div>
             </div>
@@ -95,7 +101,7 @@
           ${menuData.type==='view' ? `
             <div class="form-group">
               <label>跳转链接地址</label>
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" name="url" placeholder="例如：https://www.baidu.com/" value="${menuData.url || ''}">
             </div>
           `: ""}
         `: ''}
@@ -129,6 +135,10 @@
           obj[item.name] = item.value;
           return obj;
         }, {});
+        if(data.type === 'click') {
+          data.key = data.keyPrefix + '-' + data.key;
+          delete data.keyPrefix;
+        }
         wechatMenu.updateMenu(index, data);
       }
     });

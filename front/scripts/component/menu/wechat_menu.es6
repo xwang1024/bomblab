@@ -146,7 +146,7 @@
     updateMenu(index, data) {
       let currentMenu = this.data.menu.button[index];
       if(!currentMenu) return swal('error', '找不到当前菜单');
-      if(currentMenu.length) {
+      if(currentMenu.sub_button.length) {
         this.data.menu.button[index].name = data.name;
       } else {
         this.data.menu.button[index] = data;

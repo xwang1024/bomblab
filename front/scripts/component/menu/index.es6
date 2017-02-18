@@ -88,11 +88,11 @@
                 <div class="col-md-6">
                   <label>事件</label>
                   <select name="keyPrefix" class="form-control">
-                    <option value="message">发送消息 / 发送消息序列</option>
+                    <option value="message">回复消息 / 按队列回复消息</option>
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <label>key</label>
+                  <label>回复队列</label>
                   <input type="text" class="form-control" name="key" value="${menuData.key ? (menuData.key.split('-')[1] || ''): ''}">
                 </div>
               </div>
@@ -112,6 +112,31 @@
         <button type="submit" class="btn btn-green pull-right mr" name='submitBtn'>保存</button>
       </form>
     `);
+    let keyInput = $('input[name=key]');
+    let key = menuData.key ? (menuData.key.split('-')[1] || ''): '';
+    if(keyInput) {
+      $.ajax({
+        type: 'GET',
+        url: '/api/admin/replyQueue',
+        dataType: 'json',
+        contentType: 'application/json',
+        success : function(data) {
+          keyInput.before(`
+            <select name="key" class="form-control">
+              ${data.map((group) => {
+                if(group._id === key) {
+                  return `<option value="${group._id}" selected>${group.name}</option>`;
+                } else {
+                  return `<option value="${group._id}">${group.name}</option>`;
+                }
+              })}
+            </select>
+          `);
+          keyInput.remove();
+          $('select').selectric();
+        }
+      })
+    }
     $('select').selectric();
     
     $('select[name=type]').selectric().on('change', function() {
@@ -172,7 +197,7 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label>key</label>
+                <label>回复队列</label>
                 <input type="text" class="form-control" name="key">
               </div>
             </div>
@@ -191,6 +216,31 @@
         <button type="submit" class="btn btn-green pull-right mr" name='submitBtn'>保存</button>
       </form>
     `);
+    let keyInput = $('input[name=key]');
+    let key = subMenuData.key ? (subMenuData.key.split('-')[1] || ''): '';
+    if(keyInput) {
+      $.ajax({
+        type: 'GET',
+        url: '/api/admin/replyQueue',
+        dataType: 'json',
+        contentType: 'application/json',
+        success : function(data) {
+          keyInput.before(`
+            <select name="key" class="form-control">
+              ${data.map((group) => {
+                if(group._id === key) {
+                  return `<option value="${group._id}" selected>${group.name}</option>`;
+                } else {
+                  return `<option value="${group._id}">${group.name}</option>`;
+                }
+              })}
+            </select>
+          `);
+          keyInput.remove();
+          $('select').selectric();
+        }
+      })
+    }
     $('select').selectric();
     
     $('select[name=type]').selectric().on('change', function() {
@@ -214,6 +264,10 @@
           obj[item.name] = item.value;
           return obj;
         }, {});
+        if(data.type === 'click') {
+          data.key = data.keyPrefix + '-' + data.key;
+          delete data.keyPrefix;
+        }
         wechatMenu.updateSubMenu(index, subIndex, data);
       }
     });

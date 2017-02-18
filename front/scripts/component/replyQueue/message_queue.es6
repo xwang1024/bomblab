@@ -19,7 +19,6 @@
     }
 
     _render() {
-      console.log(this.data)
       $('#detail-area').html(`
         ${this.data.messageGroups.map((messageGroup, index) => (
           `<div class="panel panel-default">
@@ -52,8 +51,8 @@
                         <div>
                           <button class="btn btn-danger btn-xs pull-right" name="deleteMessageBtn">删除</button>
                           <button class="btn btn-default btn-xs pull-right mr-sm" name="previewImageBtn" data-url="/admin/material/image/preview?mediaId=${message.mediaId}">预览</button>
-                          <button class="btn btn-default btn-xs pull-right mr-sm" name="forwardMessageBtn">下移</button>
-                          <button class="btn btn-default btn-xs pull-right mr-sm" name="backwardMessageBtn">上移</button>
+                          <button class="btn btn-default btn-xs pull-right mr-sm" name="backwardMessageBtn">下移</button>
+                          <button class="btn btn-default btn-xs pull-right mr-sm" name="forwardMessageBtn">上移</button>
                         </div>
                       </li>`
                   }
@@ -116,7 +115,9 @@
         let messageGroupIndex = vm.$element.find('.panel').index($(this).parents('.panel'));
         $(this).parents('.panel').find('.message-bubble-list').append(`
           <li>
-            <input type="text" class="form-control" name="mediaId" placeholder="请输入mediaId">
+            <input type="hidden" class="form-control" name="mediaId" placeholder="请输入mediaId">
+            <button class="btn btn-default btn-xs" name="uploadImage">上传新图片</button>
+            <button class="btn btn-default btn-xs" name="chooseImage">选择已有图片</button>
             <div>
               <button class="btn btn-default btn-xs pull-right" name="confirmImageBtn">确定</button>
               <button class="btn btn-default btn-xs pull-right mr-sm" name="cancelBtn">取消</button>
@@ -125,6 +126,77 @@
         `);
         // 禁止无关按钮触发
         vm._disableBtnOnEditing();
+
+        vm.$element.find('[name=uploadImage]').unbind().on('click', function() {
+          $('body').append($('#create-tpl').html());
+          $('#create').modal({backdrop: 'static', keyboard: false});
+          $('[name=submitBtn]').prop('disabled', true);
+
+          $('input[type=file]').on("change", function (e) {
+            let file = e.currentTarget.files[0];
+            if(file) {
+              if(file.size > 2000000) {
+                alert('图片文件大小不得超过2M');
+                $('[name=submitBtn]').prop('disabled', true);
+              } else {
+                console.log(file);
+                $('[name=submitBtn]').prop('disabled', false);
+                $('[name=uploadFilePath]').text(file.name);
+              }
+            }
+          });
+
+          $('#image-upload-btn').unbind().on('click', function(e) {
+            $('input[type=file]').trigger('click');
+          })
+
+          $('#create #image-form').on('submit', function (e) {
+            if (e.isDefaultPrevented()) {
+            } else {
+              e.preventDefault();
+              let data = new FormData();
+              data.append('type', 'image');
+              data.append('file', $('input[type=file]')[0].files[0]);
+              Loader.show();
+              $.ajax({
+                url : '/api/admin/material',
+                type : 'POST',
+                data : data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success : function(data) {
+                  Loader.hide();
+                  console.log(data);
+                  if (data.error) {
+                    if (typeof data.error.message === 'object') {
+                      data.error.message = data.error.message.join('\n');
+                    }
+                    return swal('错误', data.error.message, 'error');
+                  }
+                  swal({
+                      title : "图片上传成功",
+                      type : "success"
+                    },
+                    function () {
+                      $('#create').modal('hide');
+                      vm.$element.find('input[name=mediaId]').val(data.media_id);
+                      vm.$element.find('[name=uploadImage]').prop('disabled', true);
+                      vm.$element.find('[name=chooseImage]').prop('disabled', true)
+                    });
+                }
+              });
+            }
+          });
+          $('#create').on('hidden.bs.modal', function () {
+            $('#create').remove();
+          });
+        });
+
+        vm.$element.find('[name=chooseImage]').unbind().on('click', function() {
+          
+        });
+
         vm.$element.find('[name=confirmImageBtn]').unbind().on('click', function() {
           let mediaId = vm.$element.find('input[name=mediaId]').val();
           vm.data.messageGroups[messageGroupIndex].push({

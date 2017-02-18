@@ -5,14 +5,14 @@
   
   $('[name=addQueueBtn]').click(function() {
     $('body').append($('#create-tpl').html());
-    $('#create').modal({backdrop: 'static', keyboard: false});
+    $('#create1').modal({backdrop: 'static', keyboard: false});
 
-    $('#create #queue-form').on('submit', function (e) {
+    $('#create1 #queue-form').on('submit', function (e) {
       if (e.isDefaultPrevented()) {
       } else {
         e.preventDefault();
         var sceneStrs = [];
-        var name = $('#create [name=name]').val();
+        var name = $('#create1 [name=name]').val();
         Loader.show();
         $.ajax({
           url : '/api/admin/replyQueue',

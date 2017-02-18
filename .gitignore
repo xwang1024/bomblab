@@ -29,6 +29,8 @@ node_modules
 bower_components
 
 /views
-/public
+/public/css
+/public/js
+/public/vendor
 
 *.log

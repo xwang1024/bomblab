@@ -64,7 +64,7 @@
               <div class="row-masonry row-masonry-md-5 row-masonry-sm-2">
                 ${resData.result.map((img) => {
                   return `<div class="col-masonry">
-                    <a href="javascript:;" data-media-id="${img.media_id}"><img src="/admin/material/image/preview?mediaId=${img.media_id}" alt="" class="img-thumbnail img-responsive"></a>
+                    <a href="javascript:;" data-dismiss="modal" data-media-id="${img.media_id}"><img src="/admin/material/image/preview?mediaId=${img.media_id}" alt="" class="img-thumbnail img-responsive"></a>
                   </div>`
                 }).join('')}
               </div>

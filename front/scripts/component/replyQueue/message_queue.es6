@@ -47,7 +47,9 @@
                   if(message.type === 'image') {
                     return `
                       <li>
-                        <span class="fa fa-picture-o"></span>
+                        <a href="javascript:;" name="previewImageBtn" data-url="/admin/material/image/preview?mediaId=${message.mediaId}">
+                          <img src="/admin/material/image/preview?mediaId=${message.mediaId}">
+                        </a>
                         <div>
                           <button class="btn btn-danger btn-xs pull-right" name="deleteMessageBtn">删除</button>
                           <button class="btn btn-default btn-xs pull-right mr-sm" name="previewImageBtn" data-url="/admin/material/image/preview?mediaId=${message.mediaId}">预览</button>
@@ -115,13 +117,9 @@
         let messageGroupIndex = vm.$element.find('.panel').index($(this).parents('.panel'));
         $(this).parents('.panel').find('.message-bubble-list').append(`
           <li>
-            <input type="hidden" class="form-control" name="mediaId" placeholder="请输入mediaId">
             <button class="btn btn-default btn-xs" name="uploadImage">上传新图片</button>
             <button class="btn btn-default btn-xs" name="chooseImage">选择已有图片</button>
-            <div>
-              <button class="btn btn-default btn-xs pull-right" name="confirmImageBtn">确定</button>
-              <button class="btn btn-default btn-xs pull-right mr-sm" name="cancelBtn">取消</button>
-            </div>
+            <button class="btn btn-default btn-xs pull-right mr-sm" name="cancelBtn">取消</button>
           </li>
         `);
         // 禁止无关按钮触发
@@ -180,9 +178,12 @@
                     },
                     function () {
                       $('#create').modal('hide');
-                      vm.$element.find('input[name=mediaId]').val(data.media_id);
-                      vm.$element.find('[name=uploadImage]').prop('disabled', true);
-                      vm.$element.find('[name=chooseImage]').prop('disabled', true)
+                      let mediaId = data.media_id;
+                      vm.data.messageGroups[messageGroupIndex].push({
+                        type: 'image',
+                        mediaId: mediaId
+                      });
+                      vm._render();
                     });
                 }
               });
@@ -193,17 +194,17 @@
           });
         });
 
-        vm.$element.find('[name=chooseImage]').unbind().on('click', function() {
-          
-        });
-
-        vm.$element.find('[name=confirmImageBtn]').unbind().on('click', function() {
-          let mediaId = vm.$element.find('input[name=mediaId]').val();
+        let imgSelector = require('component/common/img_selector');
+        imgSelector('[name=chooseImage]', function(mediaId) {
           vm.data.messageGroups[messageGroupIndex].push({
             type: 'image',
             mediaId: mediaId
           });
           vm._render();
+        })
+
+        vm.$element.find('[name=confirmImageBtn]').unbind().on('click', function() {
+          
         });
         vm.$element.find('[name=cancelBtn]').unbind().on('click', function() {
           vm._render();

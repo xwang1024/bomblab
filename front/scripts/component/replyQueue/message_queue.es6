@@ -51,7 +51,7 @@
                         <span class="fa fa-picture-o"></span>
                         <div>
                           <button class="btn btn-danger btn-xs pull-right" name="deleteMessageBtn">删除</button>
-                          <button class="btn btn-default btn-xs pull-right mr-sm" name="previewMessageBtn">预览</button>
+                          <button class="btn btn-default btn-xs pull-right mr-sm" name="previewImageBtn" data-url="/admin/material/image/preview?mediaId=${message.mediaId}">预览</button>
                           <button class="btn btn-default btn-xs pull-right mr-sm" name="forwardMessageBtn">下移</button>
                           <button class="btn btn-default btn-xs pull-right mr-sm" name="backwardMessageBtn">上移</button>
                         </div>
@@ -70,6 +70,7 @@
 
     _bind() {
       let vm = this;
+      require('component/common/img_preview')();
       this.$element.find('[name=addGroupBtn]').unbind().on('click', function(e) {
         vm.data.messageGroups.push([]);
         vm._render();
@@ -192,6 +193,8 @@
       this.$element.find('[name=deleteMessageBtn]').prop('disabled', true);
       this.$element.find('[name=addGroupBtn]').prop('disabled', true);
       this.$element.find('[name=saveGroupBtn]').prop('disabled', true);
+      this.$element.find('[name=deleteGroupBtn]').prop('disabled', true);
+      this.$element.find('[name=previewImageBtn]').prop('disabled', true);
     }
 
     _enableBtnOnEditing() {
@@ -205,6 +208,8 @@
       this.$element.find('[name=deleteMessageBtn]').prop('disabled', false);
       this.$element.find('[name=addGroupBtn]').prop('disabled', false);
       this.$element.find('[name=saveGroupBtn]').prop('disabled', false);
+      this.$element.find('[name=deleteGroupBtn]').prop('disabled', false);
+      this.$element.find('[name=previewImageBtn]').prop('disabled', false);
     }
 
     moveGroup(index, offset) {

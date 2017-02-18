@@ -41,8 +41,8 @@
         });
       }
     });
-    $('#create').on('hidden.bs.modal', function () {
-      $('#create').remove();
+    $('#create1').on('hidden.bs.modal', function () {
+      $('#create1').remove();
     });
   });
 

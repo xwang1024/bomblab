@@ -4,7 +4,7 @@
   var Loader = require('component/common/loader');
   
   $('[name=addQueueBtn]').click(function() {
-    $('body').append($('#create-tpl').html());
+    $('body').append($('#create1-tpl').html());
     $('#create1').modal({backdrop: 'static', keyboard: false});
 
     $('#create1 #queue-form').on('submit', function (e) {

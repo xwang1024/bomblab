@@ -11,11 +11,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
         <h4 class="modal-title" id="createLabel">增加消息组</h4>
       </div>
-      <form id='activity-form'>
+      <form id='group-form'>
         <div class="modal-body">
           <div class="form-group">
             <label>回复时间（单位：分钟）</label>
-            <input type="text" name='waitSeconds' placeholder="关注多少分钟后回复该消息组？" class="form-control" required autocomplete="off">
+            <input type="number" name='waitMinutes' min="0" placeholder="关注多少分钟后回复该消息组？" class="form-control" required autocomplete="off">
           </div>
         </div>
         <div class="modal-footer">
@@ -30,7 +30,7 @@
 
 <div class="content-heading">
   <div class="pull-right">
-    <button class="btn btn-green" name="addGroupBtn">增加消息组</button>
+    <button class="btn btn-green" name="addGroupBtn" data-js-comp="component/subscribeReply/create">增加消息组</button>
   </div>
   <ol class="breadcrumb">
     <li>
@@ -44,9 +44,10 @@
 
 <div class="row">
   <div id="detail-area" class="col-md-12">
+    {{#each _DATA_.result}}
     <div class="panel panel-default">
       <div class="panel-heading">
-        等待...分钟后回复
+        等待 <b>{{waitMinutes}}</b> 分钟后回复
         <button class="btn btn-xs btn-danger pull-right" name="deleteMessageGroupBtn">删除</button>
         <button class="btn btn-xs btn-warning pull-right mr-sm" name="modifyMessageGroupBtn">编辑</button>
       </div>
@@ -58,5 +59,6 @@
         </ul>
       </div>
     </div>
+    {{/each}}
   </div>
 </div>

@@ -74,6 +74,16 @@
         </a>
       </li>
       
+      {{#startsWith _PATH_ "/admin/customGroupSend"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/customGroupSend" title="客服消息群发">
+          <em class="fa fa-send"></em>
+          <span>客服消息群发</span>
+        </a>
+      </li>
 
       {{#startsWith _PATH_ "/admin/material/image"}}
       <li class="active">

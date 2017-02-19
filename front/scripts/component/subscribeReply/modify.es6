@@ -17,8 +17,10 @@
       success: function(resData) {
         data = resData;
         render();
+        $('[name=modifyReplyBtn]').prop('disabled', true);
+        $('[name=deleteReplyBtn]').prop('disabled', true);
       }
-    })
+    });
   });
 
   function render() {

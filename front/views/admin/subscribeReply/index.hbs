@@ -3,8 +3,8 @@
 
 {{#block "vendor_js"}}
 <!--加modal模板-->
-<script type="text/html" id='create-tpl'>
-  <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
+<script type="text/html" id='create1-tpl'>
+  <div class="modal fade" id="create1" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
       <div class="modal-header">
@@ -26,6 +26,7 @@
     </div>
   </div>
 </script>
+{{>modal/createImageModal}}
 {{/block}}
 
 <div class="content-heading">
@@ -42,20 +43,39 @@
   </ol>
 </div>
 
+<input type="hidden" data-js-comp="component/common/img_preview">
+<input type="hidden" data-js-comp="component/subscribeReply/modify">
+<input type="hidden" data-js-comp="component/subscribeReply/delete">
+
 <div class="row">
   <div id="detail-area" class="col-md-12">
     {{#each _DATA_.result}}
-    <div class="panel panel-default">
+    <div class="panel panel-default" data-id="{{_id}}">
       <div class="panel-heading">
         等待 <b>{{waitMinutes}}</b> 分钟后回复
-        <button class="btn btn-xs btn-danger pull-right" name="deleteMessageGroupBtn">删除</button>
-        <button class="btn btn-xs btn-warning pull-right mr-sm" name="modifyMessageGroupBtn">编辑</button>
+        <button class="btn btn-xs btn-danger pull-right" name="deleteReplyBtn">删除</button>
+        <button class="btn btn-xs btn-warning pull-right mr-sm" name="modifyReplyBtn">编辑</button>
       </div>
       <div class="panel-body pv0">
         <ul class="message-bubble-list">
-          <li>
-            <span>Hello</span>
-          </li>
+          {{#unless messages}}
+            <p class="text-muted text-center">无消息</p>
+          {{else}}
+            {{#each messages}}
+              {{#equals type "image"}}
+              <li>
+                <a href="javascript:;" name="previewImageBtn" data-url="/admin/material/image/preview?mediaId={{{mediaId}}}">
+                  <img src="/admin/material/image/preview?mediaId={{{mediaId}}}">
+                </a>
+              </li>
+              {{/equals}}
+              {{#equals type "text"}}
+              <li>
+                <span>{{content}}</span>
+              </li>
+              {{/equals}}
+            {{/each}}
+          {{/unless}}
         </ul>
       </div>
     </div>

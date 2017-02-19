@@ -4,15 +4,15 @@
   var Loader = require('component/common/loader');
   
   $('[name=addGroupBtn]').click(function() {
-    $('body').append($('#create-tpl').html());
-    $('#create').modal({backdrop: 'static', keyboard: false});
+    $('body').append($('#create1-tpl').html());
+    $('#create1').modal({backdrop: 'static', keyboard: false});
 
-    $('#create #group-form').on('submit', function (e) {
+    $('#create1 #group-form').on('submit', function (e) {
       if (e.isDefaultPrevented()) {
       } else {
         e.preventDefault();
         var sceneStrs = [];
-        var waitMinutes = $('#create [name=waitMinutes]').val() || 0;
+        var waitMinutes = $('#create1 [name=waitMinutes]').val() || 0;
         waitMinutes = parseInt(waitMinutes);
         Loader.show();
         $.ajax({
@@ -35,15 +35,15 @@
                 type : "success"
               },
               function () {
-                $('#create').modal('hide');
+                $('#create1').modal('hide');
                 location.reload();
               });
           }
         });
       }
     });
-    $('#create').on('hidden.bs.modal', function () {
-      $('#create').remove();
+    $('#create1').on('hidden.bs.modal', function () {
+      $('#create1').remove();
     });
   });
 

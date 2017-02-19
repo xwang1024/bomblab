@@ -57,7 +57,6 @@
           <thead>
           <tr>
             <th class="text-left">队列名称</th>
-            <th class="text-left">KEY</th>
             <th class="text-center">创建时间</th>
             <th class="text-right">操作</th>
           </tr>
@@ -66,7 +65,6 @@
             {{#each _DATA_.result}}
             <tr data-id="{{{_id}}}" data-name="{{name}}" data-hint="{{hint}}">
               <td>{{name}}</td>
-              <td class="text-left">{{_id}}</td>
               <td class="text-center">
                 <span class="text-sm text-muted">{{date createdAt "yyyy-MM-dd HH:mm:ss"}}</span>
               </td>

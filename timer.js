@@ -55,4 +55,4 @@ setInterval(function() {
       });
     });
   }); 
-}, timeWindowSize/2 + 1000)
+}, timeWindowSize-1000)

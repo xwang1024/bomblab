@@ -134,14 +134,14 @@
           if (e.isDefaultPrevented()) {
           } else {
             e.preventDefault();
-            let data = new FormData();
-            data.append('type', 'image');
-            data.append('file', $('input[type=file]')[0].files[0]);
+            let formData = new FormData();
+            formData.append('type', 'image');
+            formData.append('file', $('input[type=file]')[0].files[0]);
             Loader.show();
             $.ajax({
               url : '/api/admin/material',
               type : 'POST',
-              data : data,
+              data : formData,
               cache: false,
               contentType: false,
               processData: false,

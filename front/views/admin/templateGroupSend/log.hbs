@@ -1,0 +1,78 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+{{/block}}
+
+<div class="content-heading">
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li>
+      <a href="/admin/customGroupSend">客服消息群发</a>
+    </li>
+    <li class="active">
+      <span>群发日志</span>
+    </li>
+  </ol>
+</div>
+
+<div class="row">
+  <div id="list-area" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel panel-body p0 m0">
+        {{#unless _DATA_.result}}
+        <div class="text-muted text-center pv">当前没有群发记录</div>
+        {{else}}
+        <table class='table tabel-striped'>
+          <thead>
+          <tr>
+            <th class="text-center" width="40">#</th>
+            <th class="text-left">消息名称</th>
+            <th class="text-left" colspan='2'>接收人</th>
+            <th class="text-center">发送时间</th>
+            <th class="text-right">发送结果</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each _DATA_.result}}
+            <tr data-id="{{{_id}}}" class="{{#equals status 'Success'}}bg-green-light{{else}}bg-danger-light{{/equals}}">
+              <td class="text-center">{{plus @index 1}}</td>
+              <td>{{customMessageGroup.name}}</td>
+              <td style='width: 24px;'>
+                <img src="{{{subscriber.headImgUrl}}}" style='max-width: 24px; max-height: 24px;'/>
+              </td>
+              <td class="text-left pl0">
+                {{subscriber.nickname}} 
+                <small class="text-muted">{{#if remark}} ({{remark}}){{/if}}</small>
+              </td>
+              <td class="text-center">
+                <span class="text-sm">{{date createdAt "yyyy-MM-dd HH:mm:ss"}}</span>
+              </td>
+              <td class="text-right">
+                {{status}}
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{>pagination}}
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+  <div id="detail-area" class="col-md-5 hidden">
+    <div class="panel panel-default" data-id="58a90e46aa501eed9c909512">
+      <div class="panel-heading">
+        客服消息组
+        <button class="btn btn-xs btn-danger pull-right" name="deleteReplyBtn">删除</button>
+        <button class="btn btn-xs btn-warning pull-right mr-sm" name="modifyReplyBtn">编辑</button>
+      </div>
+      <div class="panel-body pv0">
+        <ul class="message-bubble-list">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

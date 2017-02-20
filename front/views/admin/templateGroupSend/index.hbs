@@ -1,0 +1,100 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+<!--加modal模板-->
+<script type="text/html" id='create-group-tpl'>
+  <div class="modal fade" id="create-group" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+        <h4 class="modal-title" id="createLabel">创建模板消息</h4>
+      </div>
+      <form id='group-form'>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>名称</label>
+            <input type="text" name='name' placeholder="请输入名称" class="form-control" required autocomplete="off">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-green" name='submitBtn'>提交</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</script>
+{{>modal/createImageModal}}
+{{/block}}
+
+<div class="content-heading">
+  <div class="pull-right">
+    <button type="button" class='btn btn-green btn-sm' name='addGroupBtn' data-js-comp="component/templateGroupSend/create">新建模板消息</button>
+  </div>
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li class="active">
+      <span>模板消息群发</span>
+    </li>
+  </ol>
+</div>
+
+<input type="hidden" data-js-comp="component/templateGroupSend/groupSend">
+<input type="hidden" data-js-comp="component/templateGroupSend/detail">
+<input type="hidden" data-js-comp="component/templateGroupSend/delete">
+
+<div class="row">
+  <div id="list-area" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel panel-body p0 m0">
+        {{#unless _DATA_.result}}
+        <div class="text-muted text-center pv">当前没有模板消息</div>
+        {{else}}
+        <table class='table tabel-striped'>
+          <thead>
+          <tr>
+            <th class="text-left">消息名称</th>
+            <th class="text-center">创建时间</th>
+            <th class="text-right">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each _DATA_.result}}
+            <tr data-id="{{{_id}}}" data-name="{{name}}" data-hint="{{hint}}">
+              <td>{{name}}</td>
+              <td class="text-center">
+                <span class="text-sm text-muted">{{date createdAt "yyyy-MM-dd HH:mm:ss"}}</span>
+              </td>
+              <td class="text-right">
+                <a href="javascript:;" name='groupSendBtn'>群发</a>
+                <a href="javascript:;" name='groupDetailBtn'>详情</a>
+                <a href="/admin/customGroupSend/{{_id}}/log">日志</a>
+                <a href="javascript:;" name='deleteGroupBtn'>删除</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{>pagination}}
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+  <div id="detail-area" class="col-md-5 hidden">
+    <div class="panel panel-default" data-id="58a90e46aa501eed9c909512">
+      <div class="panel-heading">
+        模板消息组
+        <button class="btn btn-xs btn-danger pull-right" name="deleteReplyBtn">删除</button>
+        <button class="btn btn-xs btn-warning pull-right mr-sm" name="modifyReplyBtn">编辑</button>
+      </div>
+      <div class="panel-body pv0">
+        <ul class="message-bubble-list">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

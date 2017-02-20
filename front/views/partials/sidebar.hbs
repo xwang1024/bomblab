@@ -84,6 +84,16 @@
           <span>客服消息群发</span>
         </a>
       </li>
+      {{#startsWith _PATH_ "/admin/templateGroupSend"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/templateGroupSend" title="模板消息群发">
+          <em class="fa fa-send"></em>
+          <span>模板消息群发</span>
+        </a>
+      </li>
 
       {{#startsWith _PATH_ "/admin/material/image"}}
       <li class="active">

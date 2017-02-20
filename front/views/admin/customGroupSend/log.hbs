@@ -2,37 +2,9 @@
 {{/block}}
 
 {{#block "vendor_js"}}
-<!--加modal模板-->
-<script type="text/html" id='create-group-tpl'>
-  <div class="modal fade" id="create-group" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
-        <h4 class="modal-title" id="createLabel">创建客服消息</h4>
-      </div>
-      <form id='group-form'>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>名称</label>
-            <input type="text" name='name' placeholder="请输入名称" class="form-control" required autocomplete="off">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-green" name='submitBtn'>提交</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</script>
-{{>modal/createImageModal}}
 {{/block}}
 
 <div class="content-heading">
-  <div class="pull-right">
-    <button type="button" class='btn btn-green btn-sm' name='addGroupBtn' data-js-comp="component/customGroupSend/create">创建客服消息</button>
-  </div>
   <ol class="breadcrumb">
     <li>
       <span>管理</span>
@@ -45,10 +17,6 @@
     </li>
   </ol>
 </div>
-
-<input type="hidden" data-js-comp="component/customGroupSend/groupSend">
-<input type="hidden" data-js-comp="component/customGroupSend/detail">
-<input type="hidden" data-js-comp="component/customGroupSend/delete">
 
 <div class="row">
   <div id="list-area" class="col-md-12">

@@ -3,11 +3,11 @@
 (function(window, document, $, module, exports, require, swal, Qiniu, QiniuConfig){
   var Loader = require('component/common/loader');
 
-  $('[name=deleteGroupBtn]').click(function(e) {
+  $('[name=deleteMessageBtn]').click(function(e) {
     var id = $(this).parents('tr').data('id');
     swal({
-      title : '确定删除客服消息？',
-      text : '该操作不可逆，且该客服消息相关的日志也将被删除',
+      title : '确定删除模板消息？',
+      text : '该操作不可逆，且该消息相关的日志也将被删除',
       type : "warning",
       showCancelButton : true,
       confirmButtonText : "确定删除",
@@ -17,7 +17,7 @@
       if (isConfirm) {
         Loader.show();
         $.ajax({
-          url: '/api/admin/customGroupSend/'+id,
+          url: '/api/admin/templateGroupSend/'+id,
           type: 'DELETE',
           dataType: 'json',
           contentType: 'application/json',

@@ -6,7 +6,7 @@
   $('[name=groupSendBtn]').click(function(e) {
     var id = $(this).parents('tr').data('id');
     swal({
-      title : '确定群发客服消息？',
+      title : '确定群发模板消息？',
       text : '群发过程不可中断，请确保群发的内容无误！',
       type : "warning",
       showCancelButton : true,
@@ -17,7 +17,7 @@
       if (isConfirm) {
         Loader.show();
         $.ajax({
-          url: '/api/admin/customGroupSend/'+id+'/send',
+          url: '/api/admin/templateGroupSend/'+id+'/send',
           type: 'POST',
           dataType: 'json',
           contentType: 'application/json',

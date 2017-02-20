@@ -41,23 +41,31 @@
             ${params.map((param) => {
               return `
                 <div class="form-group">
+                  <input type="color" name="${param}Color" class="color-input pull-right">
                   <label>@${param}</label>
                   <input type="text" name='${param}' placeholder="${param}" class="form-control param-input" required autocomplete="off" value="{{${param}.DATA}}">
+                  
                 </div>
               `;
             }).join('')}
           `);
           $('#create-message').find('#preview-area pre').html(currentTemplate.content);
           $('.param-input').on('blur keyup propertychange', function () {
-            let templateData = {};
+            renderPreviewArea();
+          });
+          $('.color-input').on('change', function () {
+            renderPreviewArea();
+          });
+          function renderPreviewArea() {
             let previewContent = currentTemplate.content;
             $('.param-input').each(function() {
               let k = $(this).attr('name');
               let v = $(this).val();
-              previewContent = previewContent.replace(`{{${k}.DATA}}`, v);
+              let color = $(`[name=${k}Color]`).val();
+              previewContent = previewContent.replace(`{{${k}.DATA}}`, `<span style="color: ${color}">${v}</span>`);
             });
             $('#create-message').find('#preview-area pre').html(previewContent);
-          });
+          }
         });
       }
     })

@@ -2,7 +2,14 @@ apps:
   - script : "bin/www"
     name   : 'bomblab-wechat'
     log_date_format : "YYYY-MM-DD HH:mm:ss.SSS"
-    log_file : "./combined.log"
+    error_file : "./main_err.log"
+    out_file : "./main_std.log"
     merge_logs : true
-    instances : 2
+    instances : 4
     exec_mode  : "cluster"
+  - script : "subscribe_timer.js"
+    name : "bomblab-subscribe-timer"
+    error_file : "./subscribe_err.log"
+    out_file : "./subscribe_std.log"
+    merge_logs : true
+    log_date_format : "YYYY-MM-DD HH:mm:ss.SSS"

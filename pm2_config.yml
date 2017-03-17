@@ -5,7 +5,7 @@ apps:
     error_file : "./main_err.log"
     out_file : "./main_std.log"
     merge_logs : true
-    instances : 4
+    instances : 2
     exec_mode  : "cluster"
   - script : "subscribe_timer.js"
     name : "bomblab-subscribe-timer"

@@ -85,7 +85,7 @@
           let v = $(this).val();
           let color = $(`[name=${k}Color]`).val();
           payload.data[k] = {
-            "value": v,
+            "value": v && v.replace('<br>', '\n'),
             "color": color
           }
         });

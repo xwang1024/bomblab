@@ -12,6 +12,7 @@
       type : 'POST',
       dataType: 'json',
       contentType: 'application/json',
+      timeout: 60000,
       success : (data) => {
         Loader.hide();
         if(data.error) {

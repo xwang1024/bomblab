@@ -27,15 +27,14 @@ const timeWindowSize = 5000;
 const async = require('async');
 
 setInterval(function() {
-  console.log('[Timer] SubscriberReply');
   let now = Date.now();
   app.db.models.SubscribeReply.find().sort('waitMinutes').exec((err, replies) => {
-    console.log('[Timer] Replies count: ' + replies.length)
+    console.log('Replies count: ' + replies.length)
     replies.forEach((reply) => {
       let end = now - reply.waitMinutes*60*1000;
       let start = end - timeWindowSize;
       app.db.models.Subscriber.find({ subscribe: true, subscribeTime: {$gt: start, $lt: end}}).exec((err, subscribers) => {
-        console.log(`[Timer] Subscribers (${reply.waitMinutes} Min): ` + subscribers.map((e) => (e.openId)));
+        console.log(`Subscribers (${reply.waitMinutes} Min): ` + subscribers.map((e) => (e.openId)));
         subscribers.forEach((subscriber) => {
           async.eachSeries(reply.messages, function(message, callback) {
             if(message.type === 'text') {
@@ -55,4 +54,6 @@ setInterval(function() {
       });
     });
   }); 
-}, timeWindowSize-1000)
+}, timeWindowSize-1000);
+
+console.log(`Started.`);

@@ -29,9 +29,9 @@ const async = require('async');
 setInterval(function() {
   app.db.models.TemplateSendLog.find({ status: 'Pending' }).limit(10).populate('templateMessage subscriber').exec((err, logs) => {
     if(err) return console.log(err);
-    if(!logs || !logs.length) return console.log(`[TPLSender|${new Date().format('yyyy-MM-dd HH:mm:ss:S')}] Empty Queue.`);
+    if(!logs || !logs.length) return console.log(`Empty Queue.`);
     async.eachSeries(logs, function(log, callback) {
-      console.log(`[TPLSender|${new Date().format('yyyy-MM-dd HH:mm:ss:S')}] Send Template Message: OpenId=${log.subscriber.openId} tplId=${log.templateMessage.templateId}`);
+      console.log(`Send Template Message: OpenId=${log.subscriber.openId} tplId=${log.templateMessage.templateId}`);
       Wechat.sendTemplateMessage(
         log.subscriber.openId, 
         log.templateMessage.templateId, 
@@ -47,13 +47,13 @@ setInterval(function() {
       });
     }, function(err) {
       if(err) {
-        console.error(`[TPLSender|${new Date().format('yyyy-MM-dd HH:mm:ss:S')}] Error: ${err}`);
+        console.error(`Error: ${err}`);
         console.error(err && err.stack);
       } else {
-        console.log(`[TPLSender|${new Date().format('yyyy-MM-dd HH:mm:ss:S')}] Send: ${logs.length}`);
+        console.log(`Send: ${logs.length}`);
       }
     });
   });
 }, interval);
 
-console.log(`[TPLSender|${new Date().format('yyyy-MM-dd HH:mm:ss:S')}] Started.`);
+console.log(`Started.`);

@@ -37,7 +37,12 @@
           </thead>
           <tbody>
             {{#each _DATA_.result}}
-            <tr data-id="{{{_id}}}" style="height: 41px;" class="{{#equals status 'Success'}}bg-green-light{{else}}bg-danger-light{{/equals}}">
+            <tr data-id="{{{_id}}}" style="height: 41px;" class="
+              {{#equals status 'Success'}}bg-green-light{{/equals}}
+              {{#equals status 'Pending'}}bg-gray-light{{/equals}}
+              {{#equals status 'Sending'}}bg-primary-light{{/equals}}
+              {{#notIn status 'Success,Pending,Sending'}}bg-danger-light{{/notIn}}
+            ">
               <td class="text-center">{{plus @index 1}}</td>
               <td>{{customMessageGroup.name}}</td>
               <td style='width: 24px;'>

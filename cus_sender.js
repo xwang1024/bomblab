@@ -23,7 +23,7 @@ require('./lib/model')(app, mongoose);
 Cache.init(config.redis);
 Wechat.init(config.wechat);
 
-const interval = 3000;
+const interval = 5000;
 const limitCount = 10;
 const async = require('async');
 const LogModel = app.db.models.CustomSendLog;

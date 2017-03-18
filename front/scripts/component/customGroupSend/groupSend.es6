@@ -31,11 +31,11 @@
             } else {
               swal({
                 title : "成功",
-                text : "该消息已群发",
+                text : "已经加入群发队列，请进入日志查看",
                 type : "success"
               },
               function () {
-                location.reload();
+                window.location.href = '/admin/customGroupSend/'+id+'/log';
               });
             }
           }

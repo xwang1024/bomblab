@@ -40,8 +40,9 @@
             <tr data-id="{{{_id}}}" style="height: 41px;" class="
               {{#equals status 'Success'}}bg-green-light{{/equals}}
               {{#equals status 'Pending'}}bg-gray-light{{/equals}}
+              {{#equals status 'Queuing'}}bg-gray{{/equals}}
               {{#equals status 'Sending'}}bg-primary-light{{/equals}}
-              {{#notIn status 'Success,Pending,Sending'}}bg-danger-light{{/notIn}}
+              {{#notIn status 'Success,Pending,Queuing,Sending'}}bg-danger-light{{/notIn}}
             ">
               <td class="text-center">{{plus @index 1}}</td>
               <td>{{customMessageGroup.name}}</td>
@@ -56,7 +57,7 @@
                 <span class="text-sm">{{date createdAt "yyyy-MM-dd HH:mm:ss"}}</span>
               </td>
               <td class="text-right">
-                {{status}}
+                {{sendFeedback status}}
               </td>
             </tr>
             {{/each}}

@@ -1,0 +1,56 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+<script src="/vendor/plupload/js/plupload.full.min.js"></script>
+<script src="/vendor/qiniu/dist/qiniu.min.js"></script>
+<script src="//cdn.bootcss.com/fabric.js/1.7.8/fabric.min.js"></script>
+{{/block}}
+
+<div class="content-heading">
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li>
+      <a href="/admin/invitationCard">邀请卡管理</a>
+    </li>
+    <li class="active">
+      <span>配置</span>
+    </li>
+  </ol>
+</div>
+
+<div class="row">
+  <div id="list-area" class="col-md-12">
+    <div class="panel panel-default" data-js-comp="component/invitationCard/settings">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <p class="lead bb pb-sm">图片配置</p>
+            <div class="input-group">
+              <span type="text" class="form-control" name="uploadFilePath"><span class="text-placeholder">请选择背景图片</span></span>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" id="bg-upload-btn">选择文件</button>
+              </span>
+            </div>
+            <div id="card-editor" style="display: none;"  class="pt pb">
+              <canvas id="canvas" width="500" style="border: 1px solid green;" class="mb"></canvas>
+              <div class="pt pb">
+                文字颜色：<input type="color" name="textColor">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                字号：<input type="number" min="0" name="fontSize" value="16">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button name="addAvatar" disabled="disabled">添加头像</button>
+                <button name="removeAvatar">删除头像</button>
+                <button name="addUsername" disabled="disabled">添加用户名</button>
+                <button name="removeUsername">删除用户名</button>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

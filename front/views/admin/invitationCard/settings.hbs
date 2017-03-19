@@ -8,6 +8,9 @@
 {{/block}}
 
 <div class="content-heading">
+  <div class="pull-right">
+    <button type="button" class='btn btn-green btn-sm' name="submitBtn">提交</button>
+  </div>
   <ol class="breadcrumb">
     <li>
       <span>管理</span>
@@ -28,26 +31,32 @@
         <div class="row">
           <div class="col-md-12">
             <p class="lead bb pb-sm">图片配置</p>
-            <div class="input-group">
-              <span type="text" class="form-control" name="uploadFilePath"><span class="text-placeholder">请选择背景图片</span></span>
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" id="bg-upload-btn">选择文件</button>
-              </span>
-            </div>
-            <div id="card-editor" style="display: none;"  class="pt pb">
-              <canvas id="canvas" width="500" style="border: 1px solid green;" class="mb"></canvas>
-              <div class="pt pb">
-                文字颜色：<input type="color" name="textColor">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                字号：<input type="number" min="0" name="fontSize" value="16">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <button name="addAvatar" disabled="disabled">添加头像</button>
-                <button name="removeAvatar">删除头像</button>
-                <button name="addUsername" disabled="disabled">添加用户名</button>
-                <button name="removeUsername">删除用户名</button>
+            <div class="row">
+              <div class="col-md-6">
+                <label>背景</label>
+                <div class="input-group">
+                  <span type="text" class="form-control" name="uploadFilePath" style="overflow: hidden;"><span class="text-placeholder">请选择背景图片</span></span>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" id="bg-upload-btn">选择文件</button>
+                  </span>
+                </div>
+                <div id="card-editor" class="pt">
+                  <label>邀请卡编辑</label>
+                  <canvas id="canvas" style="border: 1px solid green;" class="mb"></canvas>
+                  <div class="pt form-inline">
+                    文字颜色：<input type="color" name="textColor">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    字号：<input type="number" min="0" name="fontSize" value="16">
+                  </div>
+                  <div class="pt form-inline">
+                    <button class="btn btn-default" name="addAvatar" disabled="disabled">添加头像</button>
+                    <button class="btn btn-default" name="removeAvatar">删除头像</button>
+                    <button class="btn btn-default" name="addUsername" disabled="disabled">添加用户名</button>
+                    <button class="btn btn-default" name="removeUsername">删除用户名</button>
+                  </div>
+                </div>
               </div>
             </div>
-            
           </div>
         </div>
       </div>

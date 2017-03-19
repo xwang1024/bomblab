@@ -20,6 +20,7 @@ const route = require('./lib/route')();
 const initPassport = require('./lib/passport');
 const config = require('./lib/config');
 const Wechat = require('./lib/service/Wechat');
+const Mongo  = require('./lib/service/Mongo');
 const Cache  = require('./lib/service/Cache');
 const Xiumi = require('./lib/service/Xiumi');
 
@@ -27,11 +28,10 @@ const app = express();
 app.config = config;
 
 // init mongodb connection
-mongoose.Promise = global.Promise;
-app.db = mongoose.createConnection(config.mongodb.uri);
-app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
-app.db.once('open', function () { /* ... */ });
-require('./lib/model')(app, mongoose);
+Mongo.getClient(config.mongodb).then((mongoClient) => {
+  app.db = mongoClient;
+  require('./lib/model')(app, mongoose);
+});
 
 Cache.init(config.redis);
 Wechat.init(config.wechat);

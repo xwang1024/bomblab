@@ -68,7 +68,6 @@
   }
 
   function renderMenuPanel(menuData, index, subIndex) {
-    console.log(menuData)
     $('#menu-config-area').html(`
       <form id='menu-option-form'>
         <div class="form-group">

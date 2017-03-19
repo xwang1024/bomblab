@@ -155,6 +155,30 @@
             };
           }
         });
+        $.ajax({
+          url : '/api/admin/setting/invitedCardImage',
+          type : 'PUT',
+          data : JSON.stringify(json),
+          dataType: 'json',
+          contentType: 'application/json',
+          success : function(data) {
+            Loader.hide();
+            console.log(data);
+            if (data.error) {
+              if (typeof data.error.message === 'object') {
+                data.error.message = data.error.message.join('\n');
+              }
+              return swal('错误', data.error.message, 'error');
+            }
+            swal({
+                title : "配置保存成功",
+                type : "success"
+              },
+              function () {
+                window.location.href = '/admin/invitationCard';
+              });
+          }
+        });
         console.log(json);
       },
       Error: function(up, err, errTip) {

@@ -100,7 +100,7 @@
         vm.addMenu({
           "type": "click",
           "name": "新菜单",
-          "key": "custom key",
+          "key": "",
           "sub_button": []
         });
       });
@@ -108,7 +108,7 @@
         vm.addMenu({
           "type": "click",
           "name": "新菜单",
-          "key": "custom key",
+          "key": "",
           "sub_button": []
         });
       });
@@ -117,7 +117,7 @@
         vm.addSubMenu(index, {
           "type": "click",
           "name": "新按钮",
-          "key": "custom key",
+          "key": "",
           "sub_button": []
         });
       });

@@ -68,6 +68,7 @@
   }
 
   function renderMenuPanel(menuData, index, subIndex) {
+    console.log(menuData)
     $('#menu-config-area').html(`
       <form id='menu-option-form'>
         <div class="form-group">
@@ -88,13 +89,16 @@
                 <div class="col-md-6">
                   <label>事件</label>
                   <select name="keyPrefix" class="form-control">
-                    <option value="message">回复消息 / 按队列回复消息</option>
+                    <option value="message"${menuData.key.indexOf('message') === 0 ? " selected": ""}>回复消息 / 按队列回复消息</option>
+                    <option value="invitationCard"${menuData.key.indexOf('invitationCard') === 0 ? " selected": ""}>获取邀请码</option>
                   </select>
                 </div>
-                <div class="col-md-6">
-                  <label>回复队列</label>
-                  <input type="text" class="form-control" name="key" value="${menuData.key ? (menuData.key.split('-')[1] || ''): ''}">
-                </div>
+                ${!menuData.key || menuData.key.indexOf('message') === 0 ? `
+                  <div class="col-md-6">
+                    <label>回复队列</label>
+                    <input type="text" class="form-control" name="key">
+                  </div>
+                `: ""}
               </div>
             </div>
           `: ""}
@@ -143,6 +147,10 @@
       menuData.type = $(this).val();
       renderMenuPanel(menuData, index, subIndex);
     });
+    $('select[name=keyPrefix]').selectric().on('change', function() {
+      menuData.key = $(this).val();
+      renderMenuPanel(menuData, index, subIndex);
+    });
 
     $('[name=forwardBtn]').on('click', function() {
       wechatMenu.moveMenu(index, -1);
@@ -161,8 +169,14 @@
           return obj;
         }, {});
         if(data.type === 'click') {
-          data.key = data.keyPrefix + '-' + data.key;
-          delete data.keyPrefix;
+          if(data.keyPrefix == 'message') {
+            data.key = data.keyPrefix + '-' + data.key;
+            delete data.keyPrefix;
+          }
+          if(data.keyPrefix == 'invitationCard') {
+            data.key = data.keyPrefix;
+            delete data.keyPrefix;
+          }
         }
         wechatMenu.updateMenu(index, data);
       }
@@ -193,13 +207,16 @@
               <div class="col-md-6">
                 <label>事件</label>
                 <select name="keyPrefix" class="form-control">
-                  <option value="message">发送消息 / 发送消息序列</option>
+                  <option value="message"${subMenuData.key.indexOf('message') === 0 ? " selected": ""}>发送消息 / 发送消息序列</option>
+                  <option value="invitationCard"${subMenuData.key.indexOf('invitationCard') === 0 ? " selected": ""}>获取邀请码</option>
                 </select>
               </div>
-              <div class="col-md-6">
-                <label>回复队列</label>
-                <input type="text" class="form-control" name="key">
-              </div>
+              ${!subMenuData.key || subMenuData.key.indexOf('message') === 0 ? `
+                <div class="col-md-6">
+                  <label>回复队列</label>
+                  <input type="text" class="form-control" name="key">
+                </div>
+              `: ""}
             </div>
           </div>
         `: ""}
@@ -248,6 +265,11 @@
       renderSubMenuPanel(subMenuData, index, subIndex);
     });
 
+    $('select[name=keyPrefix]').selectric().on('change', function() {
+      subMenuData.key = $(this).val();
+      renderSubMenuPanel(subMenuData, index, subIndex);
+    });
+
     $('[name=forwardBtn]').on('click', function() {
       wechatMenu.moveSubMenu(index, subIndex, -1);
     });
@@ -265,8 +287,14 @@
           return obj;
         }, {});
         if(data.type === 'click') {
-          data.key = data.keyPrefix + '-' + data.key;
-          delete data.keyPrefix;
+          if(data.keyPrefix == 'message') {
+            data.key = data.keyPrefix + '-' + data.key;
+            delete data.keyPrefix;
+          }
+          if(data.keyPrefix == 'invitationCard') {
+            data.key = data.keyPrefix;
+            delete data.keyPrefix;
+          }
         }
         wechatMenu.updateSubMenu(index, subIndex, data);
       }

@@ -6,9 +6,9 @@
   $('#invitation-switch').on('change', function() {
     var status = $(this).prop('checked');
     $.ajax({
-      url : '/api/admin/setting/invitedCardStatus',
+      url : '/api/admin/setting/invitationCardStatus',
       type : 'PUT',
-      data : status,
+      data : JSON.stringify({ status }),
       dataType: 'json',
       contentType: 'application/json',
       success : function(data) {

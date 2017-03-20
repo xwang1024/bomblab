@@ -53,7 +53,7 @@ app.use(morgan(':remote-addr :username :method :url HTTP/:http-version :status :
   skip: (req, res) => { return /(.*\.css$)|(.*\.js$)|(.*\.ico$)|(.*\.png$)|(.*\.woff$)|(.*\.woff2$)/.test(req.path); }
 }));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '3mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.xml());
 app.use(cookieParser());

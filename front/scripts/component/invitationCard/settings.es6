@@ -126,9 +126,7 @@
           var scale = canvasWidth / this.width;
           canvas.setHeight(scale * this.height);
           // 删除所有元素
-          canvas.getObjects().forEach((o) => {
-            o.remove();
-          });
+          canvas.clear();
           
           var dataUrl = this.getAsDataURL("image/jpeg", 100);
           fabric.Image.fromURL(dataUrl, function(oImg) {

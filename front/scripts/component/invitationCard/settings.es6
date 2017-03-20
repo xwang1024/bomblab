@@ -13,57 +13,84 @@
   if(_SETTING_ && _SETTING_.value) {
     $('#canvas').attr('height', canvasWidth/_SETTING_.value.width*_SETTING_.value.height);
     canvas = new fabric.Canvas('canvas');
-    canvas.loadFromJSON(_SETTING_.value, canvas.renderAll.bind(canvas));
+    canvas.loadFromJSON(_SETTING_.value, function() {
+      canvas.renderAll();
+      var bg, text, avatarCircle;
+      canvas.getObjects().forEach((o) => {
+        if(o.fillRule === 'background') {
+          bg = o;
+          bg.set({
+            fillRule: 'background',
+            perPixelTargetFind: true,
+            hasControls: false,
+            hasBorders: false,
+            evented: false,
+            selectable: false
+          });
+          canvas.sendToBack(bg);
+          canvas.renderAll();
+        }
+        if(o.type === 'circle') {
+          avatarCircle = o;
+        }
+        if(o.type === 'text') {
+          text = o;
+          $('[name=textColor]').val(o.fill);
+          $('[name=fontSize]').val(o.fontSize);
+        }
+      });
+      if(!text) {
+        $('[name=addUsername]').prop('disabled', false);
+        $('[name=removeUsername]').prop('disabled', true);
+        text = new fabric.Text('[用户名]', { fontSize: 16, left: 140, top: 10, fill: 'black' });
+        text.setControlsVisibility({ bl: false, br: false, mb: false, ml: false, mr: false, mt: false, tl: false, tr: false, mtr: false });
+      }
+      if(!avatarCircle) {
+        $('[name=addAvatar]').prop('disabled', false);
+        $('[name=removeAvatar]').prop('disabled', true);
+        avatarCircle = new fabric.Circle({ left: 60, top: 0, fill: 'red', radius: 30, lockRotation: true, lockScalingFlip: true, lockSkewingX: true, lockSkewingY: true });
+        avatarCircle.setControlsVisibility({ bl: true, br: true, mb: false, ml: false, mr: false, mt: false, tl: true, tr: true, mtr: false });
+      }
+      // 按钮绑定
+      $('[name=textColor]').unbind().bind('change', function() {
+        text.setColor($(this).val());
+        canvas.renderAll();
+      });
+      $('[name=fontSize]').unbind().bind('keypress', function(e) {
+        if(e.keyCode === 13) {
+          text.set({ fontSize: parseInt($(this).val()) || 14 });
+          canvas.renderAll();
+        }
+      });
+      $('[name=addAvatar]').unbind().bind('click', function(e) {
+        $('[name=addAvatar]').prop('disabled', true);
+        $('[name=removeAvatar]').prop('disabled', false);
+        canvas.add(avatarCircle);
+        canvas.renderAll();
+      });
+      $('[name=removeAvatar]').unbind().bind('click', function(e) {
+        $('[name=addAvatar]').prop('disabled', false);
+        $('[name=removeAvatar]').prop('disabled', true);
+        avatarCircle.remove();
+        canvas.renderAll();
+      });
+      $('[name=addUsername]').unbind().bind('click', function(e) {
+        $('[name=addUsername]').prop('disabled', true);
+        $('[name=removeUsername]').prop('disabled', false);
+        canvas.add(text);
+        canvas.renderAll();
+      })
+      $('[name=removeUsername]').unbind().bind('click', function(e) {
+        $('[name=addUsername]').prop('disabled', false);
+        $('[name=removeUsername]').prop('disabled', true);
+        text.remove();
+        canvas.renderAll();
+      });
+    });
+      
   } else {
     $('#canvas').attr('height', 200);
     canvas = new fabric.Canvas('canvas');
-    // 二维码
-    var qrRect = new fabric.Rect({ left: 0, top: 0, fill: 'green', width: 60, height: 60, lockRotation: true, lockScalingFlip: true, lockSkewingX: true, lockSkewingY: true });
-    qrRect.setControlsVisibility({ bl: true, br: true, mb: false, ml: false, mr: false, mt: false, tl: true, tr: true, mtr: false });
-    canvas.add(qrRect);
-    // 头像
-    var avatarCircle = new fabric.Circle({ left: 60, top: 0, fill: 'red', radius: 30, lockRotation: true, lockScalingFlip: true, lockSkewingX: true, lockSkewingY: true });
-    avatarCircle.setControlsVisibility({ bl: true, br: true, mb: false, ml: false, mr: false, mt: false, tl: true, tr: true, mtr: false });
-    canvas.add(avatarCircle);
-    // 用户名
-    var text = new fabric.Text('[用户名]', { fontSize: 16, left: 140, top: 10, fill: 'black' });
-    text.setControlsVisibility({ bl: false, br: false, mb: false, ml: false, mr: false, mt: false, tl: false, tr: false, mtr: false });
-    canvas.add(text);
-    // 按钮绑定
-    $('[name=textColor]').on('change', function() {
-      text.setColor($(this).val());
-      canvas.renderAll();
-    });
-    $('[name=fontSize]').on('keypress', function(e) {
-      if(e.keyCode === 13) {
-        text.set({ fontSize: parseInt($(this).val()) || 14 });
-        canvas.renderAll();
-      }
-    });
-    $('[name=addAvatar]').on('click', function(e) {
-      $('[name=addAvatar]').prop('disabled', true);
-      $('[name=removeAvatar]').prop('disabled', false);
-      canvas.add(avatarCircle);
-      canvas.renderAll();
-    });
-    $('[name=removeAvatar]').on('click', function(e) {
-      $('[name=addAvatar]').prop('disabled', false);
-      $('[name=removeAvatar]').prop('disabled', true);
-      avatarCircle.remove();
-      canvas.renderAll();
-    });
-    $('[name=addUsername]').on('click', function(e) {
-      $('[name=addUsername]').prop('disabled', true);
-      $('[name=removeUsername]').prop('disabled', false);
-      canvas.add(text);
-      canvas.renderAll();
-    })
-    $('[name=removeUsername]').on('click', function(e) {
-      $('[name=addUsername]').prop('disabled', false);
-      $('[name=removeUsername]').prop('disabled', true);
-      text.remove();
-      canvas.renderAll();
-    });
   }
   
 
@@ -98,11 +125,9 @@
           // 重置 canvas 高度
           var scale = canvasWidth / this.width;
           canvas.setHeight(scale * this.height);
-          // 删除原背景
+          // 删除所有元素
           canvas.getObjects().forEach((o) => {
-            if(o.fillRule === 'background') {
-              o.remove();
-            }
+            o.remove();
           });
           
           var dataUrl = this.getAsDataURL("image/jpeg", 100);
@@ -119,8 +144,55 @@
             canvas.add(oImg);
             canvas.sendToBack(oImg);
             canvas.renderAll();
+
+            // 二维码
+            var qrRect = new fabric.Rect({ left: 0, top: 0, fill: 'green', width: 60, height: 60, lockRotation: true, lockScalingFlip: true, lockSkewingX: true, lockSkewingY: true });
+            qrRect.setControlsVisibility({ bl: true, br: true, mb: false, ml: false, mr: false, mt: false, tl: true, tr: true, mtr: false });
+            canvas.add(qrRect);
+            // 头像
+            var avatarCircle = new fabric.Circle({ left: 60, top: 0, fill: 'red', radius: 30, lockRotation: true, lockScalingFlip: true, lockSkewingX: true, lockSkewingY: true });
+            avatarCircle.setControlsVisibility({ bl: true, br: true, mb: false, ml: false, mr: false, mt: false, tl: true, tr: true, mtr: false });
+            canvas.add(avatarCircle);
+            // 用户名
+            var text = new fabric.Text('[用户名]', { fontSize: 16, left: 140, top: 10, fill: 'black' });
+            text.setControlsVisibility({ bl: false, br: false, mb: false, ml: false, mr: false, mt: false, tl: false, tr: false, mtr: false });
+            canvas.add(text);
+            // 按钮绑定
+            $('[name=textColor]').unbind().bind('change', function() {
+              text.setColor($(this).val());
+              canvas.renderAll();
+            });
+            $('[name=fontSize]').unbind().bind('keypress', function(e) {
+              if(e.keyCode === 13) {
+                text.set({ fontSize: parseInt($(this).val()) || 14 });
+                canvas.renderAll();
+              }
+            });
+            $('[name=addAvatar]').unbind().bind('click', function(e) {
+              $('[name=addAvatar]').prop('disabled', true);
+              $('[name=removeAvatar]').prop('disabled', false);
+              canvas.add(avatarCircle);
+              canvas.renderAll();
+            });
+            $('[name=removeAvatar]').unbind().bind('click', function(e) {
+              $('[name=addAvatar]').prop('disabled', false);
+              $('[name=removeAvatar]').prop('disabled', true);
+              avatarCircle.remove();
+              canvas.renderAll();
+            });
+            $('[name=addUsername]').unbind().bind('click', function(e) {
+              $('[name=addUsername]').prop('disabled', true);
+              $('[name=removeUsername]').prop('disabled', false);
+              canvas.add(text);
+              canvas.renderAll();
+            })
+            $('[name=removeUsername]').unbind().bind('click', function(e) {
+              $('[name=addUsername]').prop('disabled', false);
+              $('[name=removeUsername]').prop('disabled', true);
+              text.remove();
+              canvas.renderAll();
+            });
           });
-          
         };
         img.onembedded = function() {
           this.destroy();

@@ -20,8 +20,6 @@
         if(o.fillRule === 'background') {
           bg = o;
           bg.set({
-            fillRule: 'background',
-            perPixelTargetFind: true,
             hasControls: false,
             hasBorders: false,
             evented: false,

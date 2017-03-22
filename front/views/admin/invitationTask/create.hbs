@@ -1,0 +1,113 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+<script src="/vendor/plupload/js/plupload.full.min.js"></script>
+<script src="/vendor/qiniu/dist/qiniu.min.js"></script>
+<script src="//cdn.bootcss.com/fabric.js/1.7.8/fabric.min.js"></script>
+{{/block}}
+
+<script>
+  var _SETTING_ = {{{json}}}._DATA_.setting;
+</script>
+
+<div class="content-heading">
+  <div class="pull-right">
+    <button type="button" class='btn btn-green btn-sm' name="submitBtn">提交</button>
+  </div>
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li>
+      <a href="/admin/invitationTask">邀请任务管理</a>
+    </li>
+    <li class="active">
+      <span>增加邀请任务</span>
+    </li>
+  </ol>
+</div>
+
+<div class="row">
+  <div id="list-area" class="col-md-12">
+    <div class="panel panel-default" data-js-comp="component/invitationTask/create">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <p class="lead bb">一般配置</p>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>任务名称<span class="text-danger">&nbsp;*</span></label>
+                  <input type="text" class="form-control" placeholder="请输入任务名称" maxlength="20" name="taskName">
+                </div>
+                <div class="form-group">
+                  <label>奖励阈值<span class="text-danger">&nbsp;*</span></label>
+                  <input type="number" class="form-control" placeholder="邀请量大于等于该阈值将自动发放奖励" value="0" min="0" name="threshold">
+                </div>
+              </div>
+            </div>
+            <p class="lead bb">邀请卡图片配置</p>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>
+                    背景<span class="text-danger">&nbsp;*</span>
+                    <span class="text-muted" style="font-weight: normal;">（图片大小 1MB 以下，png 或 jpg 格式）</span>
+                  </label>
+                  <div class="input-group">
+                    <span type="text" class="form-control" name="uploadFilePath" style="overflow: hidden;"><span class="text-placeholder">请选择背景图片</span></span>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" id="bg-upload-btn">选择文件</button>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div id="card-editor">
+                    <label>邀请卡编辑<span class="text-muted" style="font-weight: normal;">（绿色正方形：二维码；红色圆形：头像；修改字号后按回车生效）</span></label>
+                    <canvas id="canvas" style="box-shadow: 1px 1px 5px gray; display: block;" class="mb" width="500" height="300"></canvas>
+                    <div class="pt form-inline">
+                      文字颜色：<input type="color" name="textColor">
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      字号：<input type="number" min="0" name="fontSize" value="16">
+                    </div>
+                    <div class="pt form-inline">
+                      <button class="btn btn-default" name="addAvatar" disabled="disabled">添加头像</button>
+                      <button class="btn btn-default" name="removeAvatar">删除头像</button>
+                      <button class="btn btn-default" name="addUsername" disabled="disabled">添加用户名</button>
+                      <button class="btn btn-default" name="removeUsername">删除用户名</button>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            <p class="lead bb">奖励模板消息配置</p>
+            <div class="row">
+              <div class="col-md-8" id="create-message">
+                <div class="form-group">
+                  <label>模板<span class="text-danger">&nbsp;*</span></label>
+                  <select name="templateId" class="form-control">
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>URL<span class="text-danger">&nbsp;*</span></label>
+                  <input type="text" name='url' placeholder="请输入跳转到的链接" class="form-control" required autocomplete="off">
+                </div>
+                <section id="params-area">
+                  
+                </section>
+                <section id="preview-area">
+                  <div class="form-group">
+                    <label>预览</label>
+                    <pre></pre>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

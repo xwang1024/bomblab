@@ -41,18 +41,6 @@
         </a>
       </li>
 
-
-      {{#startsWith _PATH_ "/admin/invitationCard"}}
-      <li class="active">
-      {{else}}
-      <li>
-      {{/startsWith}}
-        <a href="/admin/invitationCard" title="邀请卡管理">
-          <em class="fa fa-envelope"></em>
-          <span>邀请卡管理</span>
-        </a>
-      </li>
-
       {{#startsWith _PATH_ "/admin/menu"}}
       <li class="active">
       {{else}}
@@ -83,6 +71,17 @@
         <a href="/admin/subscribeReply" title="关注定时回复">
           <em class="fa fa-feed"></em>
           <span>关注定时回复</span>
+        </a>
+      </li>
+
+      {{#startsWith _PATH_ "/admin/invitationTask"}}
+      <li class="active">
+      {{else}}
+      <li>
+      {{/startsWith}}
+        <a href="/admin/invitationTask" title="邀请任务管理">
+          <em class="fa fa-envelope"></em>
+          <span>邀请任务管理</span>
         </a>
       </li>
       

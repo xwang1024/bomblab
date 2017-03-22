@@ -1,0 +1,73 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+{{/block}}
+
+<div class="content-heading">
+  <div class="pull-right">
+    <a class='btn btn-green btn-sm' href="/admin/invitationTask/create">增加任务</a>
+  </div>
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li class="active">
+      <span>邀请任务管理</span>
+    </li>
+  </ol>
+</div>
+
+<div class="row">
+  <div id="list-area" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel panel-body p0 m0">
+        {{#unless _DATA_.result}}
+        <div class="text-muted text-center pv">当前没有邀请任务</div>
+        {{else}}
+        <table class='table tabel-striped'>
+          <thead>
+          <tr>
+            <th class="text-left">任务名称</th>
+            <th class="text-center">当前状态</th>
+            <th class="text-center">创建时间</th>
+            <th class="text-center">最后更新时间</th>
+            <th class="text-right">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each _DATA_.result}}
+            <tr data-id="{{{_id}}}">
+              <td class="text-left">
+                {{name}}
+              </td>
+              <td class="text-center">
+                {{#equals status "NEW"}}<span class="label label-primary">新建</span>{{/equals}}
+                {{#equals status "OPEN"}}<span class="label label-green">正在进行</span>{{/equals}}
+                {{#equals status "CLOSE"}}<span class="label label-danger">已关闭</span>{{/equals}}
+              </td>
+              <td class="text-center">
+                <small class="text-muted">{{date createdAt "yyyy-MM-dd HH:mm:ss"}}</small>
+              </td>
+              <td class="text-center">
+                <small class="text-muted">{{date updatedAt "yyyy-MM-dd HH:mm:ss"}}</small>
+              </td>
+              <td class="text-right">
+                {{#equals status "OPEN"}}
+                <a href="javascript:;" name="closeBtn">关闭</a>
+                {{else}}
+                <a href="javascript:;" name="openBtn">开启</a>
+                {{/equals}}
+                <a href="/admin/invitationTask/modify/{{{_id}}}">修改</a>
+                <a href="javascript:;" name="deleteBtn"{{#equals status "NEW"}}{{else}} disabled="disabled"{{/equals}}>删除</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{>pagination}}
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+</div>

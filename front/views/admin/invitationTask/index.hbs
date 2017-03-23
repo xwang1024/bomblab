@@ -32,6 +32,7 @@
           <thead>
           <tr>
             <th class="text-left">任务名称</th>
+            <th class="text-center">奖励阈值</th>
             <th class="text-center">当前状态</th>
             <th class="text-center">创建时间</th>
             <th class="text-center">最后更新时间</th>
@@ -43,6 +44,9 @@
             <tr data-id="{{{_id}}}">
               <td class="text-left">
                 {{name}}
+              </td>
+              <td class="text-center">
+                {{threshold}}
               </td>
               <td class="text-center">
                 {{#equals status "NEW"}}<span class="label label-primary">新建</span>{{/equals}}

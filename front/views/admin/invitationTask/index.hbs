@@ -60,12 +60,17 @@
                 <a href="javascript:;" name="closeBtn">关闭</a>
                 {{else}}
                 <a href="javascript:;" name="openBtn">开启</a>
+                {{#equals status "NEW"}}
+                {{else}}
+                  <a href="/admin/invitationTask/cardList/{{{_id}}}">详情</a>
+                {{/equals}}
                 {{/equals}}
                 <a href="/admin/invitationTask/modify/{{{_id}}}">修改</a>
                 {{#equals status "NEW"}}
                   <a href="javascript:;" name="deleteBtn">删除</a>
                 {{else}}
-                  <a href="javascript:;" name="deleteBtn" disabled="disabled" title="您不能删除开启过的活动">删除</a>{{/equals}}
+                  <a href="javascript:;" name="deleteBtn" disabled="disabled" title="您不能删除开启过的活动">删除</a>
+                {{/equals}}
               </td>
             </tr>
             {{/each}}

@@ -1,0 +1,60 @@
+{{#block "vendor_css"}}
+{{/block}}
+
+{{#block "vendor_js"}}
+{{/block}}
+
+<div class="content-heading" data-js-comp="component/invitationCard/index">
+  <ol class="breadcrumb">
+    <li>
+      <span>管理</span>
+    </li>
+    <li>
+      <a href="/admin/invitationTask">邀请任务管理</a>
+    </li>
+    <li class="active">
+      <span>邀请任务详情</span>
+    </li>
+  </ol>
+</div>
+
+<div class="row">
+  <div id="list-area" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel panel-body p0 m0">
+        {{#unless _DATA_.result}}
+        <div class="text-muted text-center pv">当前没有邀请卡领取记录</div>
+        {{else}}
+        <table class='table tabel-striped'>
+          <thead>
+          <tr>
+            <th class="text-left" colspan='2'>基本信息</th>
+            <th class="text-center">领取/更新卡片时间</th>
+            <th class="text-right">邀请人数</th>
+          </tr>
+          </thead>
+          <tbody>
+            {{#each _DATA_.result}}
+            <tr data-id="{{{_id}}}" style="height: 65px;">
+              <td style='width: 64px;'>
+                <img src="{{{headImgUrl}}}" style='max-width: 48px; max-height: 64px;'/>
+              </td>
+              <td class="text-left">
+                {{nickname}} <br/>
+              </td>
+              <td class="text-center">
+                <small class="text-muted">{{date updatedAt "yyyy-MM-dd HH:mm:ss"}}</small>
+              </td>
+              <td class="text-right">
+                <small>{{invitedCount}}</small>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{>pagination}}
+        {{/unless}}
+      </div>
+    </div>
+  </div>
+</div>

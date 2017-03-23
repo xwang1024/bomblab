@@ -89,15 +89,18 @@
                   <label>事件</label>
                   <select name="keyPrefix" class="form-control">
                     <option value="message"${menuData.key.indexOf('message') === 0 ? " selected": ""}>回复消息 / 按队列回复消息</option>
-                    <option value="invitationCard"${menuData.key.indexOf('invitationCard') === 0 ? " selected": ""}>获取邀请码</option>
+                    <option value="invitationTask"${menuData.key.indexOf('invitationTask') === 0 ? " selected": ""}>获取邀请码</option>
                   </select>
                 </div>
-                ${!menuData.key || menuData.key.indexOf('message') === 0 ? `
+                ${menuData.key && `
                   <div class="col-md-6">
-                    <label>回复队列</label>
+                    <label>
+                      ${menuData.key.indexOf('message') === 0 ? "回复队列" : ""}
+                      ${menuData.key.indexOf('invitationTask') === 0 ? "邀请任务" : ""}
+                    </label>
                     <input type="text" class="form-control" name="key">
                   </div>
-                `: ""}
+                `}
               </div>
             </div>
           `: ""}
@@ -117,10 +120,14 @@
     `);
     let keyInput = $('input[name=key]');
     let key = menuData.key ? (menuData.key.split('-')[1] || ''): '';
-    if(keyInput) {
+    if(keyInput && keyInput.length) {
+      let queryUrl = '/api/admin/replyQueue';
+      if(menuData.key.indexOf('invitationTask') === 0) {
+        queryUrl = '/api/admin/invitationTask';
+      }
       $.ajax({
         type: 'GET',
-        url: '/api/admin/replyQueue',
+        url: queryUrl,
         dataType: 'json',
         contentType: 'application/json',
         success : function(data) {
@@ -172,7 +179,7 @@
             data.key = data.keyPrefix + '-' + data.key;
             delete data.keyPrefix;
           }
-          if(data.keyPrefix == 'invitationCard') {
+          if(data.keyPrefix == 'invitationTask') {
             data.key = data.keyPrefix;
             delete data.keyPrefix;
           }
@@ -207,12 +214,13 @@
                 <label>事件</label>
                 <select name="keyPrefix" class="form-control">
                   <option value="message"${subMenuData.key.indexOf('message') === 0 ? " selected": ""}>发送消息 / 发送消息序列</option>
-                  <option value="invitationCard"${subMenuData.key.indexOf('invitationCard') === 0 ? " selected": ""}>获取邀请码</option>
+                  <option value="invitationTask"${subMenuData.key.indexOf('invitationTask') === 0 ? " selected": ""}>获取邀请码</option>
                 </select>
               </div>
               ${!subMenuData.key || subMenuData.key.indexOf('message') === 0 ? `
                 <div class="col-md-6">
-                  <label>回复队列</label>
+                  ${subMenuData.key.indexOf('message') === 0 ? "回复队列" : ""}
+                  ${subMenuData.key.indexOf('invitationTask') === 0 ? "邀请任务" : ""}
                   <input type="text" class="form-control" name="key">
                 </div>
               `: ""}
@@ -234,10 +242,14 @@
     `);
     let keyInput = $('input[name=key]');
     let key = subMenuData.key ? (subMenuData.key.split('-')[1] || ''): '';
-    if(keyInput) {
+    if(keyInput && keyInput.length) {
+      let queryUrl = '/api/admin/replyQueue';
+      if(subMenuData.key.indexOf('invitationTask') === 0) {
+        queryUrl = '/api/admin/invitationTask';
+      }
       $.ajax({
         type: 'GET',
-        url: '/api/admin/replyQueue',
+        url: queryUrl,
         dataType: 'json',
         contentType: 'application/json',
         success : function(data) {
@@ -290,7 +302,7 @@
             data.key = data.keyPrefix + '-' + data.key;
             delete data.keyPrefix;
           }
-          if(data.keyPrefix == 'invitationCard') {
+          if(data.keyPrefix == 'invitationTask') {
             data.key = data.keyPrefix;
             delete data.keyPrefix;
           }

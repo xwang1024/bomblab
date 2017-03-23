@@ -180,7 +180,7 @@
             delete data.keyPrefix;
           }
           if(data.keyPrefix == 'invitationTask') {
-            data.key = data.keyPrefix;
+            data.key = data.keyPrefix + '-' + data.key;
             delete data.keyPrefix;
           }
         }
@@ -303,7 +303,7 @@
             delete data.keyPrefix;
           }
           if(data.keyPrefix == 'invitationTask') {
-            data.key = data.keyPrefix;
+            data.key = data.keyPrefix + '-' + data.key;;
             delete data.keyPrefix;
           }
         }

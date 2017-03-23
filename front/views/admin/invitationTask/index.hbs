@@ -60,10 +60,10 @@
                 <a href="javascript:;" name="closeBtn">关闭</a>
                 {{else}}
                 <a href="javascript:;" name="openBtn">开启</a>
+                {{/equals}}
                 {{#equals status "NEW"}}
                 {{else}}
                   <a href="/admin/invitationTask/cardList/{{{_id}}}">详情</a>
-                {{/equals}}
                 {{/equals}}
                 <a href="/admin/invitationTask/modify/{{{_id}}}">修改</a>
                 {{#equals status "NEW"}}

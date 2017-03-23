@@ -44,6 +44,47 @@
     </div>
   </div>
 </script>
+<script type="text/html" id='modify-message-tpl'>
+  <div class="modal fade" id="modify-message" tabindex="-1" role="dialog" aria-labelledby="modifyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> &times;</button>
+        <h4 class="modal-title" id="modifyLabel">修改模板消息</h4>
+      </div>
+      <form id='message-form'>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>备注名称</label>
+            <input type="text" name='name' placeholder="请输入备注名称" class="form-control" required autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label>模板</label>
+            <select name="templateId" class="form-control">
+            </select>
+          </div>
+          <div class="form-group">
+            <label>URL</label>
+            <input type="text" name='url' placeholder="请输入跳转到的链接" class="form-control" required autocomplete="off">
+          </div>
+          <section id="params-area">
+            
+          </section>
+          <section id="preview-area">
+            <div class="form-group">
+              <label>预览</label>
+              <pre></pre>
+            </div>
+          </section>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-green" name='submitBtn'>提交</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</script>
 <script type="text/html" id='preview-message-tpl'>
   <div class="modal fade" id="preview-message" tabindex="-1" role="dialog" aria-labelledby="previewLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -90,6 +131,7 @@
 
 <input type="hidden" data-js-comp="component/templateGroupSend/groupSend">
 <input type="hidden" data-js-comp="component/templateGroupSend/preview">
+<input type="hidden" data-js-comp="component/templateGroupSend/modify">
 <input type="hidden" data-js-comp="component/templateGroupSend/delete">
 
 <div class="row">
@@ -120,6 +162,7 @@
                 <a href="javascript:;" name='groupSendBtn'>群发</a>
                 <a href="javascript:;" name='messagePreviewBtn'>预览</a>
                 <a href="/admin/templateGroupSend/{{_id}}/log">日志</a>
+                <a href="javascript:;" name='modifyMessageBtn'>编辑</a>
                 <a href="javascript:;" name='deleteMessageBtn'>删除</a>
               </td>
             </tr>

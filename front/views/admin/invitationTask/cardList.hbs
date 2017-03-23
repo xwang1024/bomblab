@@ -30,6 +30,7 @@
           <tr>
             <th class="text-left" colspan='2'>基本信息</th>
             <th class="text-center">领取/更新卡片时间</th>
+            <th class="text-center">奖励状态</th>
             <th class="text-right">邀请人数</th>
           </tr>
           </thead>
@@ -44,6 +45,13 @@
               </td>
               <td class="text-center">
                 <small class="text-muted">{{date updatedAt "yyyy-MM-dd HH:mm:ss"}}</small>
+              </td>
+              <td class="text-center">
+                {{#if isRewardSended}}
+                  <span class="label label-green">已发放</span>
+                {{else}}
+                  <span class="label label-warning">未达标</span>
+                {{/if}}
               </td>
               <td class="text-right">
                 <small>{{invitedCount}}</small>

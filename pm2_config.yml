@@ -28,3 +28,10 @@ apps:
     out_file : "./log/cus_sender_std.log"
     merge_logs : true
     log_date_format : "YYYY-MM-DD HH:mm:ss.SSS"
+
+  - script : "invitation_reward_checker.js"
+    name : "bomblab-invitation-checker"
+    error_file : "./log/invitation_reward_checker_err.log"
+    out_file : "./log/invitation_reward_checker_std.log"
+    merge_logs : true
+    log_date_format : "YYYY-MM-DD HH:mm:ss.SSS"

@@ -19,6 +19,7 @@
 </div>
 
 <input type="hidden" data-js-comp="component/invitationTask/change_status">
+<input type="hidden" data-js-comp="component/invitationTask/delete">
 
 <div class="row">
   <div id="list-area" class="col-md-12">
@@ -64,7 +65,7 @@
                 {{#equals status "NEW"}}
                   <a href="javascript:;" name="deleteBtn">删除</a>
                 {{else}}
-                  <a href="javascript:;" name="deleteBtn" disabled="disabled" title="您不能删除曾今开启过的活动">删除</a>{{/equals}}
+                  <a href="javascript:;" name="deleteBtn" disabled="disabled" title="您不能删除开启过的活动">删除</a>{{/equals}}
               </td>
             </tr>
             {{/each}}

@@ -108,7 +108,7 @@
         vm.addMenu({
           "type": "click",
           "name": "新菜单",
-          "key": "",
+          "key": "message",
           "sub_button": []
         });
       });
@@ -117,7 +117,7 @@
         vm.addSubMenu(index, {
           "type": "click",
           "name": "新按钮",
-          "key": "",
+          "key": "message",
           "sub_button": []
         });
       });

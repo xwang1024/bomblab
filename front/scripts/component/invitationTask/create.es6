@@ -26,12 +26,21 @@
       let img = new Image();
       img.onload = function() {
         // 重置 canvas 高度
-        var scale = canvasWidth / this.width;
+        let scale = canvasWidth / this.width;
         canvas.setHeight(scale * this.height);
         // 删除所有元素
         canvas.clear();
+        // 取得 base64
+        let tplCanvas = document.createElement('CANVAS');
+        let tplctx = tplCanvas.getContext('2d');
+        tplCanvas.height = this.height;
+        tplCanvas.width = this.width;
+        tplctx.drawImage(this, 0, 0);
+        let base64 = tplCanvas.toDataURL('image/png');
+        tplCanvas = null;
+        tplctx = null;
         
-        fabric.Image.fromURL(url, function(oImg) {
+        fabric.Image.fromURL(base64, function(oImg) {
           oImg.scale(scale);
           oImg.set({
             fillRule: 'background',
@@ -164,6 +173,9 @@
     let name = $('[name=taskName]').val() || '';
     if(!name) return alert('您没有配置任务名称');
 
+    let threshold = Number($('[name=threshold]').val());
+    if(!threshold) return alert('您没有配置奖励阈值；奖励阈值需大于0');
+
     let cardSetting = canvas.toJSON();
     cardSetting.width = $('#canvas').width();
     cardSetting.height = $('#canvas').height();
@@ -189,7 +201,7 @@
     $.ajax({
       url : '/api/admin/invitationTask',
       type : 'POST',
-      data : JSON.stringify({ name, cardSetting, rewardMessageSetting }),
+      data : JSON.stringify({ name, threshold, cardSetting, rewardMessageSetting }),
       dataType: 'json',
       contentType: 'application/json',
       success : function(data) {

@@ -5,6 +5,7 @@
 <script src="/vendor/plupload/js/plupload.full.min.js"></script>
 <script src="/vendor/qiniu/dist/qiniu.min.js"></script>
 <script src="//cdn.bootcss.com/fabric.js/1.7.8/fabric.min.js"></script>
+{{>modal/createImageModal}}
 {{/block}}
 
 <script>
@@ -17,7 +18,7 @@
 
 <div class="content-heading">
   <div class="pull-right">
-    <button type="button" class='btn btn-green btn-sm' name="submitBtn">提交</button>
+    <button type="button" class='btn btn-green btn-sm' name="submitTaskBtn">提交</button>
   </div>
   <ol class="breadcrumb">
     <li>
@@ -49,6 +50,17 @@
                   <label>奖励阈值<span class="text-danger">&nbsp;*</span></label>
                   <input type="number" class="form-control" placeholder="邀请量大于等于该阈值将自动发放奖励" min="0" name="threshold" value="{{_DATA_.threshold}}">
                 </div>
+		            <div class="form-group">
+                  <label>奖励类型<span class="text-danger">&nbsp;*</span></label>
+                  <select name="rewardType" class="form-control">
+                    <option value="TEMPLATE" {{#equals _DATA_.rewardType "TEMPLATE"}}selected="selected"{{/equals}}>模板消息</option>
+                    <option value="CUSTOM" {{#equals _DATA_.rewardType "CUSTOM"}}selected="selected"{{/equals}}>图片 + 文字</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>奖励提示</label>
+                  <textarea name="introduction" class="form-control" style="height: 100px; resize: none;" placeholder="该提示在邀请卡生成前发送，可以解释邀请卡的用法">{{{_DATA_.introduction}}}</textarea>
+                </div>
               </div>
             </div>
             <p class="lead bb">邀请卡图片配置</p>
@@ -60,7 +72,7 @@
                     <span class="text-muted" style="font-weight: normal;">（图片大小 1MB 以下，png 或 jpg 格式）</span>
                   </label>
                   <div class="input-group">
-                    <span type="text" class="form-control" name="uploadFilePath" style="overflow: hidden;"><span class="text-placeholder">请选择背景图片</span></span>
+                    <span type="text" class="form-control" name="uploadBgPath" style="overflow: hidden;"><span class="text-placeholder">请选择背景图片</span></span>
                     <span class="input-group-btn">
                       <button type="button" class="btn btn-default" id="bg-upload-btn">选择文件</button>
                     </span>
@@ -86,9 +98,10 @@
                 
               </div>
             </div>
-            <p class="lead bb">奖励模板消息配置</p>
+            
             <div class="row">
-              <div class="col-md-8" id="create-message">
+              <div class="col-md-6" id="create-message">
+                <p class="lead bb">奖励模板消息配置</p>
                 <div class="form-group">
                   <label>模板<span class="text-danger">&nbsp;*</span></label>
                   <select name="templateId" class="form-control">
@@ -107,6 +120,19 @@
                     <pre></pre>
                   </div>
                 </section>
+              </div>
+              <div class="col-md-6">
+                <p class="lead bb">普通消息奖励</p>
+                <div class="form-group">
+                  <label>文字<span class="text-danger">&nbsp;*</span></label>
+                  <textarea name="rewardText" class="form-control" style="height: 100px; resize: none;">{{{_DATA_.rewardText}}}</textarea>
+                </div>
+                <div class="form-group">
+                  <label>图片<span class="text-danger">&nbsp;*</span></label>
+                  <button class="btn btn-default btn-xs" name="uploadImage">上传新图片</button>
+                  <button class="btn btn-default btn-xs" name="chooseImage">选择已有图片</button>
+                  <img name="rewardImage" src="/admin/material/image/preview?mediaId={{_DATA_.rewardImageMediaId}}" alt="" style="display: block; max-width: 300px;">
+                </div>
               </div>
             </div>
           </div>

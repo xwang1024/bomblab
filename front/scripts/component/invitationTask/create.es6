@@ -256,6 +256,8 @@
     let rewardImageMediaId = $('[name=rewardImage]').data('mediaId');
     if(rewardType === 'CUSTOM' && !rewardText) return alert('您没有配置提示文字');
 
+    let invitedFeedback = $('[name=invitedFeedback]').val() || undefined;
+
     let cardSetting = canvas.toJSON();
     cardSetting.width = $('#canvas').width();
     cardSetting.height = $('#canvas').height();
@@ -281,7 +283,7 @@
     $.ajax({
       url : '/api/admin/invitationTask',
       type : 'POST',
-      data : JSON.stringify({ name, threshold, rewardType, cardSetting, introduction,
+      data : JSON.stringify({ name, threshold, rewardType, cardSetting, introduction, invitedFeedback,
                               rewardMessageSetting, rewardText, rewardImageMediaId }),
       dataType: 'json',
       contentType: 'application/json',

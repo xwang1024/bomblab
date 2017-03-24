@@ -34,20 +34,40 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
       async.eachSeries(taskDocs, (taskDoc, callback) => {
         InvitationCard.find({ invitationTask: taskDoc._id, isRewardSended: false, invitedCount: { $gte: taskDoc.threshold } }).exec((err, cardDocs) => {
           cardDocs.forEach((cardDoc) => {
-            Wechat.sendTemplateMessage(
-              cardDoc.openId, 
-              taskDoc.rewardMessageSetting.templateId, 
-              taskDoc.rewardMessageSetting.url, 
-              taskDoc.rewardMessageSetting.data
-            ).then(() => {
-              cardDoc.isRewardSended = true;
-              cardDoc.save((err) => {
+            if(taskDoc.rewardType === 'TEMPLATE') {
+              Wechat.sendTemplateMessage(
+                cardDoc.openId, 
+                taskDoc.rewardMessageSetting.templateId, 
+                taskDoc.rewardMessageSetting.url, 
+                taskDoc.rewardMessageSetting.data
+              ).then(() => {
+                cardDoc.isRewardSended = true;
+                cardDoc.save((err) => {
+                  if(err) return console.error(err);
+                  console.log('Reward Message Sended: ' + cardDoc.openId);
+                });
+              }).catch((err) => {
                 if(err) return console.error(err);
-                console.log('Reward Message Sended: ' + cardDoc.openId);
               });
-            }).catch((err) => {
-              if(err) return console.error(err);
-            });
+            }
+            if(taskDoc.rewardType === 'CUSTOM') {
+              Wechat.sendText(cardDoc.openId, taskDoc.rewardText).then((data) => {
+                console.log('Reward Text Sended: ' + cardDoc.openId);
+                Wechat.sendImage(cardDoc.openId, taskDoc.rewardImageMediaId).then((data) => {
+                  console.log('Reward Image Sended: ' + cardDoc.openId);
+                }).catch((err) => {
+                  if(err) return console.error(err);
+                });
+                cardDoc.isRewardSended = true;
+                cardDoc.save((err) => {
+                  if(err) return console.error(err);
+                  console.log('Reward Message Sended: ' + cardDoc.openId);
+                });
+              }).catch((err) => {
+                if(err) return console.error(err);
+              });
+              
+            }
           });
           callback();
         });

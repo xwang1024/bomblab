@@ -10,7 +10,7 @@
 
   // 初始化文件选择按钮
   $('#bg-upload-btn').click(function() {
-    let $fileInput = $('<input type="file" name="file" accept="image/png,image/jpg" style="display: none;">');
+    let $fileInput = $('<input type="file" name="bg" accept="image/png,image/jpg" style="display: none;">');
     $(this).parent().append($fileInput);
     $fileInput.bind('change', function(e) {
       // 文件大小检测
@@ -21,7 +21,7 @@
       // 获取图片 local url
       let url = URL.createObjectURL(this.files[0]);
       // 显示图片路径
-      $('[name=uploadFilePath]').text(this.files[0].name);
+      $('[name=uploadBgPath]').text(this.files[0].name);
       // 获取图片的宽高
       let img = new Image();
       img.onload = function() {
@@ -166,15 +166,95 @@
         }
       });
     }
-  })
+  });
+
+  $('[name=uploadImage]').on('click', function() {
+    $('body').append($('#create-tpl').html());
+    $('#create').modal({backdrop: 'static', keyboard: false});
+    $('[name=submitBtn]').prop('disabled', true);
+
+    $('input[name=file]').on("change", function (e) {
+      let file = e.currentTarget.files[0];
+      if(file) {
+        if(file.size > 2000000) {
+          alert('图片文件大小不得超过2M');
+          $('[name=submitBtn]').prop('disabled', true);
+        } else {
+          console.log(file);
+          $('[name=submitBtn]').prop('disabled', false);
+          $('[name=uploadFilePath]').text(file.name);
+        }
+      }
+    });
+    $('#image-upload-btn').unbind().on('click', function(e) {
+      $('input[name=file]').trigger('click');
+    })
+
+    $('#create #image-form').on('submit', function (e) {
+      if (e.isDefaultPrevented()) {
+      } else {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append('type', 'image');
+        formData.append('file', $('input[name=file]')[0].files[0]);
+        Loader.show();
+        $.ajax({
+          url : '/api/admin/material',
+          type : 'POST',
+          data : formData,
+          cache: false,
+          contentType: false,
+          processData: false,
+          success : function(resData) {
+            Loader.hide();
+            console.log(resData);
+            if (resData.error) {
+              if (typeof resData.error.message === 'object') {
+                resData.error.message = resData.error.message.join('\n');
+              }
+              return swal('错误', resData.error.message, 'error');
+            }
+            swal({
+              title : "图片上传成功",
+              type : "success"
+            },
+            function () {
+              $('#create').modal('hide');
+              let mediaId = resData.media_id;
+              $('[name=rewardImage]')
+                .attr('src', '/admin/material/image/preview?mediaId=' + mediaId)
+                .data('mediaId', mediaId);
+            });
+          }
+        });
+      }
+    });
+    $('#create').on('hidden.bs.modal', function () {
+      $('#create').remove();
+    });
+  });
+
+  let imgSelector = require('component/common/img_selector');
+  imgSelector('[name=chooseImage]', function(mediaId) {
+    $('[name=rewardImage]')
+      .attr('src', '/admin/material/image/preview?mediaId=' + mediaId)
+      .data('mediaId', mediaId);
+  });
 
   // 提交按钮绑定
-  $('[name=submitBtn]').click(function() {
+  $('[name=submitTaskBtn]').click(function() {
     let name = $('[name=taskName]').val() || '';
     if(!name) return alert('您没有配置任务名称');
 
     let threshold = Number($('[name=threshold]').val());
     if(!threshold) return alert('您没有配置奖励阈值；奖励阈值需大于0');
+
+    let rewardType = $('[name=rewardType]').val() || 'TEMPLATE';
+    let introduction = $('[name=introduction]').val() || '';
+
+    let rewardText = $('[name=rewardText]').val() || '';
+    let rewardImageMediaId = $('[name=rewardImage]').data('mediaId');
+    if(rewardType === 'CUSTOM' && !rewardText) return alert('您没有配置提示文字');
 
     let cardSetting = canvas.toJSON();
     cardSetting.width = $('#canvas').width();
@@ -183,7 +263,7 @@
 
     let rewardMessageSetting = {}
     rewardMessageSetting.templateId = $('[name=templateId]').val() || '';
-    if(!rewardMessageSetting.templateId) return alert('您没有配置模板');
+    if(rewardType === 'TEMPLATE' && !rewardMessageSetting.templateId) return alert('您没有配置模板');
     rewardMessageSetting.url = $('[name=url]').val() || '';
     rewardMessageSetting.previewHtml = $('#preview-area pre').html() || '';
     rewardMessageSetting.data = {};
@@ -201,7 +281,8 @@
     $.ajax({
       url : '/api/admin/invitationTask',
       type : 'POST',
-      data : JSON.stringify({ name, threshold, cardSetting, rewardMessageSetting }),
+      data : JSON.stringify({ name, threshold, rewardType, cardSetting, introduction,
+                              rewardMessageSetting, rewardText, rewardImageMediaId }),
       dataType: 'json',
       contentType: 'application/json',
       success : function(data) {

@@ -48,8 +48,8 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
             }).catch((err) => {
               if(err) return console.error(err);
             });
-            callback();
           });
+          callback();
         });
       }, (err) => {
         if(err) return console.error(err);

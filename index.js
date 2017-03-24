@@ -51,7 +51,7 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
     skip: (req, res) => { return /(.*\.css$)|(.*\.js$)|(.*\.ico$)|(.*\.png$)|(.*\.woff$)|(.*\.woff2$)/.test(req.path); }
   }));
 
-  app.use(bodyParser.json({limit: '3mb'}));
+  app.use(bodyParser.json({limit: '10mb'}));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.xml());
   app.use(cookieParser());

@@ -32,7 +32,7 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
       if(err) return console.error(err);
       if(!taskDocs || !taskDocs.length) return;
       async.eachSeries(taskDocs, (taskDoc, callback) => {
-        InvitationCard.find({ invitationTask: taskDoc._id, isRewardSended: false, invitedCount: { $gte: taskDoc.threshold }, error: { $exists: false }}).exec((err, cardDocs) => {
+        InvitationCard.find({ invitationTask: taskDoc._id, isRewardSended: false, invitedCount: { $gte: taskDoc.threshold }, errorMessage: { $exists: false }}).exec((err, cardDocs) => {
           cardDocs.forEach((cardDoc) => {
             if(taskDoc.rewardType === 'TEMPLATE') {
               Wechat.sendTemplateMessage(

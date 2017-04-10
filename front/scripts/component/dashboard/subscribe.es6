@@ -74,13 +74,13 @@
       {
         show: true,
         realtime: true,
-        start: 40,
+        start: 0,
         end: 100
       }
     ]
   };
   let timeout = undefined;
-    chart.on('datazoom', function (params) {
+  chart.on('datazoom', function (params) {
     if(timeout) clearTimeout(timeout);
     timeout = setTimeout(function() {
       var length = chartOption.xAxis[0].data.length;
@@ -118,6 +118,10 @@
           chartOption.yAxis[1].max = parseInt(data.total*1.5);
           chartOption.series[1].data = data.totalData;
           chartOption.yAxis[0].max = parseInt(data.total*1.5);
+          let oneMonthZoomStart = Math.floor((1 - 30 / (data.timestamps.length + 1)) * 100);
+          if(oneMonthZoomStart < 0) oneMonthZoomStart = 0;
+          chartOption.dataZoom[0].start = oneMonthZoomStart;
+          console.log(oneMonthZoomStart);
           chart.setOption(chartOption);
           chart.hideLoading();
         }

@@ -26,7 +26,7 @@
   function render() {
     $element.html(`
       <div class="panel-heading">
-        等待 <input type="number" name='waitMinutes' min="0" class="form-control" autocomplete="off" style="width: 100px; display: inline-block;" value="${data.waitMinutes}"> 分钟后回复
+        等待 <input type="number" name='waitSeconds' min="0" class="form-control" autocomplete="off" style="width: 100px; display: inline-block;" value="${data.waitSeconds}"> 分钟后回复
         <button class="btn btn-xs btn-default pull-right" name="cancelBtn">取消</button>
         <button class="btn btn-xs btn-green pull-right mr-sm" name="saveReplyBtn">保存</button>
         <button class="btn btn-xs btn-primary pull-right mr-sm" name="addImageBtn">增加图片</button>
@@ -200,12 +200,12 @@
       deleteMessage(messageIndex);
     });
     $element.find('[name=saveReplyBtn]').unbind().on('click', function() {
-      let waitMinutes = parseInt($element.find('input[name=waitMinutes]').val() || 0);
+      let waitSeconds = parseInt($element.find('input[name=waitSeconds]').val() || 0);
       $.ajax({
         url : '/api/admin/subscribeReply/' + _id,
         type : 'PUT',
         data : JSON.stringify({
-          waitMinutes: waitMinutes,
+          waitSeconds: waitSeconds,
           messages: data.messages
         }),
         dataType: 'json',

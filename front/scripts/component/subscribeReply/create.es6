@@ -12,13 +12,13 @@
       } else {
         e.preventDefault();
         var sceneStrs = [];
-        var waitMinutes = $('#create1 [name=waitMinutes]').val() || 0;
-        waitMinutes = parseInt(waitMinutes);
+        var waitSeconds = $('#create1 [name=waitSeconds]').val() || 0;
+        waitSeconds = parseInt(waitSeconds);
         Loader.show();
         $.ajax({
           url : '/api/admin/subscribeReply',
           type : 'POST',
-          data : JSON.stringify({waitMinutes: waitMinutes}),
+          data : JSON.stringify({waitSeconds: waitSeconds}),
           dataType: 'json',
           contentType: 'application/json',
           success : function(data) {

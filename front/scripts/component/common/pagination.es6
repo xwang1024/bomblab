@@ -21,4 +21,11 @@
       window.location.search = query.toString();
     }
   });
+  
+  $('[name=toPageNo]').bind('keypress', function(e) {
+    if(e.keyCode === 13) {
+      query.set('page', $(this).val());
+      window.location.search = query.toString();
+    }
+  });
 })(window, document, window['jQuery'], module, exports, require);

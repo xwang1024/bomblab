@@ -74,7 +74,7 @@
       {
         show: true,
         realtime: true,
-        start: 0,
+        start: 40,
         end: 100
       }
     ]

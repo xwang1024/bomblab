@@ -47,7 +47,7 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
                   console.log('Reward Message Sended: ' + cardDoc.openId);
                 });
               }).catch((err) => {
-                if(err) return console.error(err);
+                if(err) console.error(err);
                 cardDoc.errorMessage = err.toStirng();
                 cardDoc.save((err) => {
                   if(err) return console.error(err);
@@ -69,7 +69,7 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
                   console.log('Reward Message Sended: ' + cardDoc.openId);
                 });
               }).catch((err) => {
-                if(err) return console.error(err);
+                if(err) console.error(err);
                 cardDoc.errorMessage = err.toStirng();
                 cardDoc.save((err) => {
                   if(err) return console.error(err);

@@ -50,7 +50,11 @@
                 {{#if isRewardSended}}
                   <span class="label label-green">已发放</span>
                 {{else}}
+                  {{#unless errorMessage}}
                   <span class="label label-warning">未达标</span>
+                  {{else}}
+                  <span class="label label-danger" title="原因：{{errorMessage}}">发放失败</span>
+                  {{/unless}}
                 {{/if}}
               </td>
               <td class="text-right">

@@ -32,7 +32,7 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
       if(err) return console.error(err);
       if(!taskDocs || !taskDocs.length) return;
       async.eachSeries(taskDocs, (taskDoc, callback) => {
-        InvitationCard.find({ invitationTask: taskDoc._id, isRewardSended: false, invitedCount: { $gte: taskDoc.threshold } }).exec((err, cardDocs) => {
+        InvitationCard.find({ invitationTask: taskDoc._id, isRewardSended: false, invitedCount: { $gte: taskDoc.threshold }, error: { $exists: false }}).exec((err, cardDocs) => {
           cardDocs.forEach((cardDoc) => {
             if(taskDoc.rewardType === 'TEMPLATE') {
               Wechat.sendTemplateMessage(
@@ -48,6 +48,11 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
                 });
               }).catch((err) => {
                 if(err) return console.error(err);
+                cardDoc.errorMessage = err.toStirng();
+                cardDoc.save((err) => {
+                  if(err) return console.error(err);
+                  console.error('Reward Message Error: ' + cardDoc.openId);
+                });
               });
             }
             if(taskDoc.rewardType === 'CUSTOM') {
@@ -65,8 +70,12 @@ Mongo.getClient(config.mongodb).then((mongoClient) => {
                 });
               }).catch((err) => {
                 if(err) return console.error(err);
+                cardDoc.errorMessage = err.toStirng();
+                cardDoc.save((err) => {
+                  if(err) return console.error(err);
+                  console.error('Reward Message Error: ' + cardDoc.openId);
+                });
               });
-              
             }
           });
           callback();
